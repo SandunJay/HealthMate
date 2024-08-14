@@ -13,5 +13,35 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ]
+  ],
+  "theme": {
+    "colors": {
+      "primary": "#1B4001",
+      "secondary": {
+        "DEFAULT": "#65A603",
+        "100": "#3B7302",
+        "200": "#9BBF65"
+      },
+      "black": {
+        "DEFAULT": "#000",
+        "100": "#1E1E2D",
+        "200": "#232533"
+      },
+      "gray": {
+        "100": "#CDCDE0"
+      },
+      "white": "#EBF2B3"
+    },
+    "fontFamily": {
+      "pthin": ["Poppins-Thin", "sans-serif"],
+      "pextralight": ["Poppins-ExtraLight", "sans-serif"],
+      "plight": ["Poppins-Light", "sans-serif"],
+      "pregular": ["Poppins-Regular", "sans-serif"],
+      "pmedium": ["Poppins-Medium", "sans-serif"],
+      "psemibold": ["Poppins-SemiBold", "sans-serif"],
+      "pbold": ["Poppins-Bold", "sans-serif"],
+      "pextrabold": ["Poppins-ExtraBold", "sans-serif"],
+      "pblack": ["Poppins-Black", "sans-serif"]
+    }
+  }
 }
