@@ -1,37 +1,38 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
+import { Stack, useRouter, useSegments } from 'expo-router';
+import { AuthProvider, useAuth } from '@/hooks/useAuth';
 import { useEffect } from 'react';
-import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/useColorScheme';
+const AppLayout = () => {
+	const { authState } = useAuth();
+	const segments = useSegments();
+	const router = useRouter();
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
+	useEffect(() => {
+		const inAuthGroup = segments[0] === '(protected)';
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (!authState?.authenticated && inAuthGroup) {
+      router.replace('/');
+    } 
+    else if (authState?.authenticated && !inAuthGroup) {
+        router.replace('/(protected)');
     }
-  }, [loaded]);
+	}, [authState, segments, router]);
 
-  if (!loaded) {
-    return null;
-  }
+	return (
+		<Stack>
+			<Stack.Screen name="index" options={{ headerShown: false, statusBarHidden:true }} />
+			<Stack.Screen name="(protected)" options={{ headerShown: false, statusBarHidden: true}} />
+			<Stack.Screen name="not-found" options={{ headerShown: false }} />
+		</Stack>
+	);
+};
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </ThemeProvider>
-  );
-}
+const RootLayoutNav = () => {
+	return (
+		<AuthProvider>
+			<AppLayout />
+		</AuthProvider>
+	);
+};
+
+export default RootLayoutNav;

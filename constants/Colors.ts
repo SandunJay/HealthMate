@@ -3,10 +3,18 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
+import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
+
 const tintColorLight = '#0a7ea4';
 const tintColorDark = '#fff';
 
 export const Colors = {
+  main: {
+    white: '#FFFFFF',
+    primary: '#45484A',
+    secondary: '#AEB5BB',
+    gray: '#D9D9D9',
+  },
   light: {
     text: '#11181C',
     background: '#fff',
@@ -14,6 +22,12 @@ export const Colors = {
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
+    text1: '#184001', // new color
+    background1: '#EBF2B3', // new color
+    tint1: tintColorLight, // new color
+    icon1: '#3B7302', // new color
+    tabIconDefault1: '#3B7302', // new color
+    tabIconSelected1: tintColorLight, // new color
   },
   dark: {
     text: '#ECEDEE',
@@ -22,5 +36,16 @@ export const Colors = {
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
+    text1: '#EBF2B3', // new color
+    background1: '#184001', // new color
+    tint1: tintColorDark, // new color
+    icon1: '#9BBF65', // new color
+    tabIconDefault1: '#9BBF65', // new color
+    tabIconSelected1: tintColorDark, // new color
   },
 };
+
+export const theme = {
+  bg: opacity => `rgba(234, 88, 12 ${opacity})`,
+  text: '#f97316'
+}
