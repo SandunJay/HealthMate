@@ -3,6 +3,10 @@ import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-nat
 import { Calendar } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import axios from 'axios';
+
+const API_ENDPOINT = 'https://cloud.appwrite.io/v1/databases/66c9c467003136e731d1/collections/appoint/documents';
+const API_KEY = 'standard_a615b85885ddf3b1636ad98e22b6b256782d0a1745b09ed68ae2474f69add021400f3dab5b300aac45e242357f9b71026e8fe6659b4e7df79e1db27d2901bc8997eb621069348276fab425390802814f9c051faa63370566af0aa95f8b17b0be5d030258c179e17c2675624d23b307fd7cdad9490b99a38b9812340ad159d4ed';
 
 const AppointmentForm = () => {
   const [selectedDate, setSelectedDate] = useState<string | undefined>(undefined);
@@ -25,7 +29,6 @@ const AppointmentForm = () => {
   }, [selectedCategory]);
 
   const fetchDoctorsByCategory = (category: string) => {
-    // Example data, replace with your API call or data source
     const doctorList = {
       'General': [
         { label: 'Dr. Smith', value: 'dr_smith' },
@@ -50,13 +53,34 @@ const AppointmentForm = () => {
     setTimePickerVisibility(false);
   };
 
-  const handleSubmit = () => {
-    // Handle form submission here
-    console.log('Selected Date:', selectedDate);
-    console.log('Selected Time:', selectedTime);
-    console.log('Selected Doctor:', selectedDoctor);
-    console.log('Description:', description);
-  };
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post(
+        API_ENDPOINT,
+        {
+            data: {
+              date: '2024-09-12',
+              time: '15:00',
+              doctor: 'Dr. Smith',
+              description: 'Patient Checkup',
+              category: 'General',
+            }
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Appwrite-Project': 'your_project_id',
+              'X-Appwrite-Key': API_KEY,
+            },
+          }
+        );
+        console.log('Document created:', response.data);
+      } catch (error) {
+        console.error('Error creating document:', error);
+      }
+    };
+  
+  
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
