@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import RNPickerSelect from 'react-native-picker-select';
+import { Button, TextInput as PaperInput, Card, Divider, Title, Subheading } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native'; // For navigation
 import { client, databases } from './appwriteConfig'; // Appwrite config import
 import { ID, Models } from 'appwrite'; // Import ID and Models from Appwrite
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-// @ts-nocheck
+
 // Define your stack parameter types for navigation
 type RootStackParamList = {
   Appointment: { newAppointment: Models.Document };
@@ -31,7 +32,7 @@ const AppointmentForm = () => {
     { label: 'General', value: 'General' },
     { label: 'Cardiology', value: 'Cardiology' },
   ]);
- // @ts-ignore 
+
   // Typed navigation hook
   const navigation = useNavigation<AppointmentFormNavigationProp>();
 
@@ -85,56 +86,67 @@ const AppointmentForm = () => {
       navigation.navigate('Appointment', { newAppointment: response });
     } catch (error) {
       console.error('Error creating appointment:', error);
+      Alert.alert('Error', 'Failed to create appointment. Please try again.');
     }
   };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Appointment Form</Text>
+      
+        <Card.Content>
+          <Title style={styles.title}>Appointment Form</Title>
 
-      <Text style={styles.label}>Select Appointment Type:</Text>
-      <RNPickerSelect
-        placeholder={{ label: 'Select a category', value: null }}
-        items={categories}
-        onValueChange={(value) => setSelectedCategory(value)}
-        value={selectedCategory}
-        style={pickerStyles}
-      />
+          <Subheading style={styles.label}>Select Appointment Type:</Subheading>
+          <RNPickerSelect
+            placeholder={{ label: 'Select a category', value: null }}
+            items={categories}
+            onValueChange={(value) => setSelectedCategory(value)}
+            value={selectedCategory}
+            style={pickerStyles}
+          />
 
-      <Text style={styles.label}>Select Date:</Text>
-      <Calendar
-        onDayPress={(day) => handleDateChange(day.dateString)}
-        markedDates={{
-          [selectedDate || '']: { selected: true, marked: true },
-        }}
-        style={styles.calendar}
-      />
+          <Subheading style={styles.label}>Select Date:</Subheading>
+          <Calendar
+            onDayPress={(day) => handleDateChange(day.dateString)}
+            markedDates={{
+              [selectedDate || '']: { selected: true, marked: true },
+            }}
+            style={styles.calendar}
+          />
 
-      <Text style={styles.label}>Select Time:</Text>
-      <Button title={selectedTime || 'Select Time'} onPress={() => setTimePickerVisibility(true)} />
-      <DateTimePickerModal
-        isVisible={isTimePickerVisible}
-        mode="time"
-        onConfirm={handleTimeConfirm}
-        onCancel={() => setTimePickerVisibility(false)}
-      />
+          <Subheading style={styles.label}>Select Time:</Subheading>
+          <Button mode="contained" onPress={() => setTimePickerVisibility(true)} style={styles.button}>
+            {selectedTime || 'Select Time'}
+          </Button>
+          <DateTimePickerModal
+            isVisible={isTimePickerVisible}
+            mode="time"
+            onConfirm={handleTimeConfirm}
+            onCancel={() => setTimePickerVisibility(false)}
+          />
 
-      <Text style={styles.label}>Select Doctor:</Text>
-      <RNPickerSelect
-        placeholder={{ label: 'Select a doctor', value: null }}
-        items={doctors}
-        onValueChange={(value) => setSelectedDoctor(value)}
-        value={selectedDoctor}
-        style={pickerStyles}
-      />
+          <Subheading style={styles.label}>Select Doctor:</Subheading>
+          <RNPickerSelect
+            placeholder={{ label: 'Select a doctor', value: null }}
+            items={doctors}
+            onValueChange={(value) => setSelectedDoctor(value)}
+            value={selectedDoctor}
+            style={pickerStyles}
+          />
 
-      <TextInput
-        placeholder="Description"
-        style={styles.input}
-        value={description}
-        onChangeText={setDescription}
-      />
-      <Button title="Submit" onPress={handleSubmit} />
+          <PaperInput
+            label="Description"
+            mode="outlined"
+            value={description}
+            onChangeText={setDescription}
+            style={styles.input}
+          />
+
+          <Button mode="contained" onPress={handleSubmit} style={styles.submitButton}>
+            Submit
+          </Button>
+        </Card.Content>
+      
     </ScrollView>
   );
 };
@@ -144,22 +156,34 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 20,
   },
+  card: {
+    borderRadius: 8,
+    elevation: 4,
+    backgroundColor: '#ffffff',
+    borderColor: '#007BFF',
+    borderWidth: 1,
+  },
   title: {
     fontSize: 24,
     marginBottom: 20,
+    color: '#007BFF',
   },
   label: {
-    fontSize: 18,
+    fontSize: 16,
     marginBottom: 10,
+    color: '#333',
   },
   calendar: {
     marginBottom: 20,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ddd',
-    padding: 10,
     marginBottom: 10,
+  },
+  button: {
+    marginBottom: 10,
+  },
+  submitButton: {
+    marginTop: 20,
   },
 });
 
@@ -168,15 +192,15 @@ const pickerStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     padding: 10,
-    marginBottom: 10,
     borderRadius: 5,
+    marginBottom: 10,
   },
   inputAndroid: {
     borderWidth: 1,
     borderColor: '#ddd',
     padding: 10,
-    marginBottom: 10,
     borderRadius: 5,
+    marginBottom: 10,
   },
 });
 

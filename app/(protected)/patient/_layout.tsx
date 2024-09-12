@@ -12,7 +12,7 @@ export default function PatientLayout() {
     <Tab.Navigator>
       <Tab.Screen name="PatientHome" component={PatientHome} options={{ title: 'Home' }} />
       <Tab.Screen name="Chat" component={Chat} options={{ title: 'Chat' }} />
-      <Tab.Screen name="Appointments" component={PatientStack} options={{ title: 'Appointments' }} />
+      <Tab.Screen name="Appointments" component={PatientStack}  />
       <Tab.Screen name="Profile" component={Profile} options={{ title: 'Profile' }} />
     </Tab.Navigator>
   );
