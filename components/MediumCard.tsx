@@ -12,7 +12,7 @@ const MediumCard = ({item}) => {
   
     const handlePress = () => {
       console.log('Navigating to: ', `/(protected)/pharmacist/inventoryItem/ with id: ${item.id}`);
-      router.push(`/(protected)/pharmacist/inventoryItem/${item.id}`);
+      router.push(`/protected/pharmacist/inventoryItem/${item.id}`);
     }; 
   
     return (

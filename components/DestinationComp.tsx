@@ -32,7 +32,7 @@ const DestinationCard = ({item}) => {
     //   pathname:'/(protected)/pharmacist/inventoryItem/[id]',
     //   params: { id: item.id }
     // })
-    router.push(`/(protected)/pharmacist/inventoryItem/${item.id}`);
+    router.push(`/protected/pharmacist/inventory/${item.id}`);
     // const uri = `/pharmacist/abc/${item.id}`
     // console.log('Navigating to: ', uri);
     // router.push(uri);
