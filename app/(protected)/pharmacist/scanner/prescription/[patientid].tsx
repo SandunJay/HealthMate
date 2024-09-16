@@ -2,22 +2,25 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import { View, Text, Image, StyleSheet, ScrollView, Pressable, TouchableOpacity, Button } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { router, Stack, useLocalSearchParams } from 'expo-router';
+import { prescriptions } from '@/assets/dummy';
 
-const conversations = [
-  { id: 1, name: 'Kyal Samuels', message: 'Hi Harold, how can I help you', time: 'Just now' },
-  { id: 2, name: 'Rhys Bains', message: 'Hi Harold, how can I help you', time: '2d ago' },
-  { id: 3, name: 'Rhys Bains', message: 'Hi Harold, how can I help you', time: '2d ago' },
-  { id: 4, name: 'Rhys Bains', message: 'Hi Harold, how can I help you', time: '2d ago' },
-];
+const Prescriptions = () => {
+  const { patientid } = useLocalSearchParams();
+  console.log("retrieved patientid: "+ patientid)
+  const filteredPrescriptions = prescriptions.filter(prescription => prescription.patientid === patientid);
 
-const SupportPage = () => {
-
-    const goToRecord = () => {
-        console.log('Go to record');
+    const goToRecord = (id: string) => {
+      router.push({
+        pathname: `/pharmacist/scanner/prescription/item/${id}`,
+        params: {patientid: patientid}
+      });
+      console.log("Passed Id: " + id + " and patientid: " + patientid);
     };
 
   return (
     <ScrollView style={styles.container}>
+      <Stack.Screen options={{headerShown:false}}/>
 
     {/* Header */}
       <View style={styles.header}>
@@ -47,20 +50,19 @@ const SupportPage = () => {
       {/* Conversation List Section */}
       <View style={styles.conversationSection}>
         <Text style={styles.conversationTitle}>All Prescriptions</Text>
-        {conversations.map((conversation) => (
-          <View key={conversation.id} style={styles.conversationItem}>
+        {filteredPrescriptions.map((prescription) => (
+          <View key={prescription.id} style={styles.conversationItem}>
             <View style={styles.conversationContent}>
-              <Image
-                source={{ uri: 'https://via.placeholder.com/50x50.png?text=User' }} // Replace with actual user image
-                style={styles.conversationImage}
-              />
               <View style={styles.conversationTextContainer}>
-                <Text style={styles.conversationName}>{conversation.name}</Text>
-                <Text style={styles.conversationMessage}>{conversation.message}</Text>
+                <Text style={styles.conversationName}>{prescription.name}</Text>
+                <Text style={styles.conversationMessage}>{prescription.date}</Text>
               </View>
             </View>
-            <Button onPress={goToRecord} title='View' color={"#f194ff"}/>
-            {/* <Text style={styles.conversationTime}>{conversation.time}</Text> */}
+                <Text style={styles.conversationTime}>{prescription.diagnosis}</Text>
+            <TouchableOpacity onPress={() => goToRecord(prescription.id)}>
+              <Text style={styles.conversationImage}>View</Text>
+            </TouchableOpacity>
+
           </View>
         ))}
       </View>
@@ -167,4 +169,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SupportPage;
+export default Prescriptions;

@@ -21,7 +21,8 @@ const AppLayout = () => {
 	return (
 		<Stack>
 			<Stack.Screen name="index" options={{ headerShown: false, statusBarHidden:true }} />
-			<Stack.Screen name="(protected)" options={{ headerShown: false, statusBarHidden: true}} />
+			<Stack.Screen name="(auth)" options={{ headerShown: false}} />
+			<Stack.Screen name="(protected)" options={{ headerShown: false, statusBarTranslucent:true, statusBarAnimation:'fade', statusBarStyle:'auto'}} />
 			<Stack.Screen name="not-found" options={{ headerShown: false }} />
 		</Stack>
 	);

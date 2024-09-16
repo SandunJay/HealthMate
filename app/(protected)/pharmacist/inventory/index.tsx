@@ -1,6 +1,6 @@
 import { InventoryItem } from '@/assets/types';
 import { inventoryData } from '@/assets/dummy';
-import { Link, router, useRouter } from 'expo-router';
+import { Link, router, Stack, useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, FlatList, TextInput, TouchableOpacity, Image, StyleSheet, Pressable } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -13,7 +13,7 @@ const InventoryScreen = () => {
   const router = useRouter(); // Get router instance
 
   const handlePress = (id:string) => {
-    router.push(`/pharmacist/inventory/${id}`); // Navigate to the dynamic path
+    router.push(`/pharmacist/inventory/${id}`);
   };
 
   const handleButtonPress = () => {
@@ -36,6 +36,7 @@ const InventoryScreen = () => {
 
   return (
     <View style={styles.container}>
+      <Stack.Screen options={{headerShown:false}}/>
       {/* Header Section */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Inventory</Text>

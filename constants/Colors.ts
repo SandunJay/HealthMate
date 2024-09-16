@@ -3,10 +3,9 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
+import { StyleSheet } from "react-native";
 import { opacity } from "react-native-reanimated/lib/typescript/reanimated2/Colors";
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
 
 export const Colors = {
   main: {
@@ -17,35 +16,53 @@ export const Colors = {
   },
   light: {
     text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
+    background: '#edffe8',
+    tint: '#ECEDEE',
     icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    tabIconDefault: '#99BC85',
+    tabIconSelected: '#789461',
     text1: '#184001', // new color
     background1: '#EBF2B3', // new color
-    tint1: tintColorLight, // new color
+    tint1: "#EEEDEB", // new color
     icon1: '#3B7302', // new color
-    tabIconDefault1: '#3B7302', // new color
-    tabIconSelected1: tintColorLight, // new color
+    tabIconDefault1: '#9BBF65', // new color
+    tabIconSelected1: '#184001', // new color
   },
   dark: {
     text: '#ECEDEE',
     background: '#151718',
-    tint: tintColorDark,
+    tint: "#f2f2f2",
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    tabIconSelected: "#35374B",
     text1: '#EBF2B3', // new color
     background1: '#184001', // new color
-    tint1: tintColorDark, // new color
+    tint1: "#E5E1DA", // new color
     icon1: '#9BBF65', // new color
-    tabIconDefault1: '#9BBF65', // new color
-    tabIconSelected1: tintColorDark, // new color
+    tabIconDefault1: '#3B7302', // new color
+    tabIconSelected1: "#686D76", // new color
+  },
+  glassBg: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)', 
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 10 },
+    shadowRadius: 10,
+    shadowOpacity: 0.1,
+  },
+  glassOly: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)', 
+    borderRadius: 25,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.3)',  
+    zIndex: -1, 
   },
 };
 
 export const theme = {
-  bg: opacity => `rgba(234, 88, 12 ${opacity})`,
+  bg: (opacity: any) => `rgba(234, 88, 12 ${opacity})`,
   text: '#f97316'
 }

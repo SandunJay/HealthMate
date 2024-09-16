@@ -29,7 +29,7 @@ const login = () => {
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 			style={styles.container}
 		>
-			{/* <Stack.Screen options={{headerShown:false}}/> */}
+			<Stack.Screen options={{headerShown:false}}/>
 			<Text style={styles.header}>My Epic App</Text>
 			<TextInput
 				autoCapitalize="none"

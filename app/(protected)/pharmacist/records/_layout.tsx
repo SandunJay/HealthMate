@@ -13,10 +13,15 @@ const ScannerLayout = () => {
 				headerTintColor: '#fff',
 				headerTitleStyle: {
 					fontWeight: 'bold'
-				}
+				},
+				statusBarHidden:true,
+				headerShown: false
 			}}
 		>
-		<Stack.Screen name="index" options={{ headerTitle: 'Records' }} />
+		<Stack.Screen name="index" options={{ headerTitle: 'Records', headerShown:false }} />
+		{/* <Stack.Screen name="new" options={{ presentation:'modal' }} /> */}
+		<Stack.Screen name="newModal" options={{presentation:'modal', headerShown:false}}/>
+
 		</Stack>
 	);
 }

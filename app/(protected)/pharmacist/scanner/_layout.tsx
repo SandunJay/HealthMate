@@ -28,13 +28,6 @@ const ScannerLayout = () => {
                     headerTitle: 'QR Scanner',
                 }}
             />
-            <Stack.Screen
-                name="nfcmodal"
-                options={{
-                    presentation: 'modal',
-                    headerTitle: 'NFC Scanner',
-                }}
-            />
 		</Stack>
 	);
 }

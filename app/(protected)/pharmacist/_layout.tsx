@@ -15,16 +15,7 @@ export default function PharmacistLayout() {
             tabBar={props => <TabBar {...props} />}
         >
             <Tabs.Screen name="index"  options={{ title: 'Home', headerShown:false }} />
-            <Tabs.Screen name="records"  options={{ title: 'Records', headerShown:false,
-                tabBarButton: (props) => (
-                    <Pressable
-                        {...props}
-                        onPress={() => resetToRoot('records')}
-                    >
-                        <Text>Records</Text>
-                    </Pressable>
-                )
-             }}/>
+            <Tabs.Screen name="records"  options={{ title: 'Records', headerShown:false,}}/>
             <Tabs.Screen name="scanner"  options={{ title: 'Scanner', headerShown:false }} />
             <Tabs.Screen name="inventory" options={{ title: 'Inventory', headerShown:false }} />
             <Tabs.Screen name="profile"  options={{ title: 'Profile', headerShown:false }} />

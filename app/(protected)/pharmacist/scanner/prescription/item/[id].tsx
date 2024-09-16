@@ -4,23 +4,26 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { recordType } from '@/assets/types';
-import {records, prescription} from '@/assets/dummy'
+import { drugs, prescriptions } from '@/assets/dummy';
+// import {records, prescriptiondatas} from '@/assets/dummy'
 
 const Record = () => {
-
-    const [text, onChangeText] = useState('');
+  const [text, onChangeText] = useState('');
 	const [record, setRecord] = useState(null); 
 	const [loading, setLoading] = useState(true);
 	const [reportPrescriptions, setReportPrescriptions] = useState([]);
 
-	const {id} = useLocalSearchParams<{id: string}>();
+	// const {id} = useLocalSearchParams<{id: string}>();
+
+	const { id, patientid } = useLocalSearchParams();
+  	console.log('Recieved id: '+ id + " pid: "+ patientid)
 
 	useEffect(() => {
 		if (id) {
-		  const fetchedRecord: recordType | undefined = records.find(item => item.id === id); 
+		  const fetchedRecord: recordType | undefined = prescriptions.find(item => item.patientid === patientid); 
 		  setRecord(fetchedRecord);
 
-			const fetchedPrescriptions = prescription.filter(prescription => prescription.id === id);
+			const fetchedPrescriptions = drugs.filter(prescription => prescription.pid === id);
 			setReportPrescriptions(fetchedPrescriptions);
 		  setLoading(false);
 		}
@@ -30,7 +33,7 @@ const Record = () => {
 	  if (loading) {
 		return (
 		  <View style={styles.loadingContainer}>
-			<ActivityIndicator size="large" color="#6200EE"/>
+			  <ActivityIndicator size="large" color="#6200EE"/>
 		  </View>
 		);
 	  }
@@ -48,7 +51,7 @@ const Record = () => {
 		<Stack.Screen options={{headerShown:false}}/>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.push('/pharmacist/records')}>
+        <TouchableOpacity onPress={() => router.push('/pharmacist/scanner')}>
           <Icon name="arrow-back" size={hp('3%')} color="#000" />
         </TouchableOpacity>
         <Text style={styles.headerText}>Record</Text>
@@ -64,7 +67,7 @@ const Record = () => {
           style={styles.doctorImage}
         />
         <View style={styles.doctorInfo}>
-          <Text style={styles.doctorName}>{record.name}</Text>
+          <Text style={styles.doctorName}>{record.patientid}</Text>
           <Text style={styles.doctorSpeciality}>Diagnosis: {record.diagnosis}</Text>
           <View style={styles.locationContainer}>
             <Icon name="location-outline" size={hp('2%')} color="#6B7280" />
@@ -81,11 +84,11 @@ const Record = () => {
           <Text style={styles.sectionTitle}>Quantity</Text>
         </View>
 
-        {reportPrescriptions.map((prescription) => (
-          <View style={styles.row} key={prescription.pid}>
-            <Text style={styles.priceText}>{prescription.name}</Text>
-            <Text style={styles.priceAmount}>{prescription.dosage}</Text>
-            <Text style={styles.priceAmount}>{prescription.quantity}</Text>
+        {reportPrescriptions.map((drug) => (
+          <View style={styles.row} key={drug.id}>
+            <Text style={styles.priceText}>{drug.name}</Text>
+            <Text style={styles.priceAmount}>{drug.dosage}</Text>
+            <Text style={styles.priceAmount}>{drug.quantity}</Text>
           </View>
         ))}
       </View>

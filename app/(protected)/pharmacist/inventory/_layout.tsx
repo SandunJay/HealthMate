@@ -13,7 +13,8 @@ const InventoryLayout = () => {
 				headerTintColor: '#fff',
 				headerTitleStyle: {
 					fontWeight: 'bold'
-				}
+				},
+        statusBarHidden:true
 			}}
 		>
 		      <Stack.Screen
