@@ -8,4 +8,6 @@ export const icons = {
     inventory: (props)=> <MaterialCommunityIcons name="warehouse" size={26} {...props} />,
     records: (props)=> <MaterialCommunityIcons name="bookshelf" size={26} {...props} />,
     scanner: (props)=> <AntDesign name="scan1" size={26} {...props} />,
+    default: (props) => <Feather name="alert-circle" size={26} {...props} />,
+
 }

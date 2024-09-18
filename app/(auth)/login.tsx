@@ -9,7 +9,7 @@ import {
     View
 } from 'react-native';
 import { useAuth } from '@/hooks/useAuth';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 
 const login = () => {
 	const [username, setUsername] = useState('pharmacist');
@@ -29,6 +29,7 @@ const login = () => {
 			behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 			style={styles.container}
 		>
+			<Stack.Screen options={{headerShown:false}}/>
 			<Text style={styles.header}>My Epic App</Text>
 			<TextInput
 				autoCapitalize="none"
