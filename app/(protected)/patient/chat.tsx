@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image } from 'react-native';
 
 // Define a type for a chat message
 type MessageType = {
@@ -35,13 +35,24 @@ const Chat = () => {
 
   return (
     <View style={styles.container}>
+      {/* Header Section with Profile, Doctor Name, and Call Option */}
+      <View style={styles.header}>
+        <Image source={{ uri: 'https://via.placeholder.com/40' }} style={styles.profileIcon} />
+        <Text style={styles.doctorName}>Dr. John Doe</Text>
+        <TouchableOpacity style={styles.callButton}>
+          <Text style={styles.callButtonText}>Call</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Chat Message List */}
       <FlatList
         data={messages}
         keyExtractor={(item) => item.id}
         renderItem={renderMessage}
         contentContainerStyle={styles.messageList}
-        inverted // To show the latest message at the bottom
       />
+
+      {/* Input Section */}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
@@ -61,10 +72,40 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0f0f0',
-    paddingTop: 10,
+  },
+  // Header styles
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderColor: '#ddd',
+  },
+  profileIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
+  doctorName: {
+    flex: 1,
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  callButton: {
+    backgroundColor: '#007bff',
+    borderRadius: 20,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+  },
+  callButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
   messageList: {
     paddingHorizontal: 10,
+    flexGrow: 1,
   },
   messageBubble: {
     maxWidth: '80%',

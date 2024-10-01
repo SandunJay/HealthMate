@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { databases } from './appwriteConfig';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 type AppointmentType = {
   $id: string;
