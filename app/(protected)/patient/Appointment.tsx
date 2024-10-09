@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity, Animated, Image } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { databases } from './appwriteConfig';
 
@@ -10,22 +10,31 @@ type AppointmentType = {
   doctor: string;
   category: string;
   description: string;
+  image: string; // Added image field
 };
+
+const doctorImages = [
+  'https://img.freepik.com/premium-photo/portrait-smiling-young-asian-female-doctor-with-stethoscope_943657-322.jpg',
+  'https://img.freepik.com/premium-photo/portrait-smiling-female-asian-doctor-with-stethoscope_900706-26112.jpg?w=360',
+  'https://img.freepik.com/premium-photo/portrait-friendly-female-doctor-workwear-with-stethoscope-neck_604472-19024.jpg',
+];
 
 const Appointment = () => {
   const [appointments, setAppointments] = useState<AppointmentType[]>([]);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const route = useRoute();
   const navigation = useNavigation();
+  const scaleAnim = new Animated.Value(1);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await databases.listDocuments(
-          'appoint',
-          '66c9c467003136e731d1'
-        );
-        setAppointments(response.documents);
+        const response = await databases.listDocuments('appoint', '66c9c467003136e731d1');
+        const appointmentsWithImages = response.documents.map((doc: any, index: number) => ({
+          ...doc,
+          image: doctorImages[index % doctorImages.length], // Assign an image from the list in a loop
+        }));
+        setAppointments(appointmentsWithImages);
       } catch (error) {
         console.error('Error fetching appointments:', error);
       }
@@ -36,9 +45,13 @@ const Appointment = () => {
 
   useEffect(() => {
     if (route.params?.newAppointment) {
+      const newAppointmentWithImage = {
+        ...route.params.newAppointment,
+        image: doctorImages[appointments.length % doctorImages.length], // Add image to new appointment
+      };
       setAppointments((prevAppointments) => [
         ...prevAppointments,
-        route.params.newAppointment as AppointmentType,
+        newAppointmentWithImage as AppointmentType,
       ]);
     }
   }, [route.params?.newAppointment]);
@@ -47,46 +60,52 @@ const Appointment = () => {
     navigation.navigate('AppointmentForm');
   };
 
-  const toggleExpand = (id: string) => {
-    setExpandedId((prevId) => (prevId === id ? null : id));
-  };
-
   const handleItemPress = (item: AppointmentType) => {
-    navigation.navigate('AppointmentItem', { appointment: item });
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      friction: 5,
+      useNativeDriver: true,
+    }).start(() => {
+      navigation.navigate('AppointmentItem', { appointment: item });
+      Animated.spring(scaleAnim, {
+        toValue: 1,
+        useNativeDriver: true,
+      }).start();
+    });
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-          {/* <Icon name="arrow-back" size={24} color="#007BFF" /> */}
-        </TouchableOpacity>
-       
-      </View>
       <FlatList
         data={appointments}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[
-              styles.appointmentItem,
-              expandedId === item.$id && styles.expandedItem,
-            ]}
-            onPress={() => handleItemPress(item)}
-          >
-            <Text style={styles.doctorText}>Doctor: {item.doctor}</Text>
-            {expandedId === item.$id && (
-              <View style={styles.detailsContainer}>
-                <Text>Date: {item.date}</Text>
-                <Text>Time: {item.time}</Text>
-                <Text>Category: {item.category}</Text>
-                <Text>Description: {item.description}</Text>
+          <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+            <TouchableOpacity
+              style={[styles.appointmentItem, expandedId === item.$id && styles.expandedItem]}
+              onPress={() => handleItemPress(item)}
+            >
+              <View style={styles.imageContainer}>
+                <Image source={{ uri: item.image }} style={styles.doctorImage} />
               </View>
-            )}
-          </TouchableOpacity>
+              <View style={styles.infoContainer}>
+                <Text style={styles.doctorText}>Doctor: {item.doctor}</Text>
+                {expandedId === item.$id && (
+                  <View style={styles.detailsContainer}>
+                    <Text style={styles.detailText}>Date: {item.date}</Text>
+                    <Text style={styles.detailText}>Time: {item.time}</Text>
+                    <Text style={styles.detailText}>Category: {item.category}</Text>
+                    <Text style={styles.detailText}>Description: {item.description}</Text>
+                  </View>
+                )}
+              </View>
+            </TouchableOpacity>
+          </Animated.View>
         )}
       />
-      <Button title="Add New Appointment" onPress={handlePress} />
+      <TouchableOpacity style={styles.addButton} onPress={handlePress}>
+        <Text style={styles.addButtonText}>Add New Appointment</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -95,46 +114,68 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f0f0f0',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  backButton: {
-    padding: 10,
-    marginRight: 20,
-  },
-  heading: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    flex: 1,
+    backgroundColor: '#f0fff4',
+    justifyContent: 'center',
   },
   appointmentItem: {
-    padding: 15,
+    flexDirection: 'row',
+    padding: 20,
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 8,
-    marginBottom: 10,
+    borderColor: '#28a745',
+    borderRadius: 12,
+    marginBottom: 15,
     backgroundColor: '#fff',
     shadowColor: '#000',
     shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 4,
   },
   expandedItem: {
-    backgroundColor: '#e8f4fd',
-    borderColor: '#007BFF',
+    backgroundColor: '#e0f7e4',
+    borderColor: '#28a745',
+  },
+  imageContainer: {
+    marginRight: 15,
+  },
+  doctorImage: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  infoContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
   doctorText: {
     fontSize: 18,
-    fontWeight: '600',
-    color: '#007BFF',
+    fontWeight: '700',
+    color: '#28a745',
+    marginBottom: 8,
   },
   detailsContainer: {
     marginTop: 10,
+    paddingLeft: 10,
+  },
+  detailText: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 5,
+  },
+  addButton: {
+    marginTop: 20,
+    backgroundColor: '#28a745',
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+    shadowColor: '#28a745',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 4,
+  },
+  addButtonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600',
   },
 });
 

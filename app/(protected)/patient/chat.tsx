@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TextInput, TouchableOpacity, Image } from 'react-native';
 
-// Define a type for a chat message
 type MessageType = {
   id: string;
   text: string;
@@ -35,9 +34,9 @@ const Chat = () => {
 
   return (
     <View style={styles.container}>
-      {/* Header Section with Profile, Doctor Name, and Call Option */}
+      {/* Header Section */}
       <View style={styles.header}>
-        <Image source={{ uri: 'https://via.placeholder.com/40' }} style={styles.profileIcon} />
+        <Image source={{ uri: 'https://img.freepik.com/premium-photo/portrait-smiling-young-asian-female-doctor-with-stethoscope_943657-322.jpg' }} style={styles.profileIcon} />
         <Text style={styles.doctorName}>Dr. John Doe</Text>
         <TouchableOpacity style={styles.callButton}>
           <Text style={styles.callButtonText}>Call</Text>
@@ -71,55 +70,68 @@ const Chat = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#f9f9f9',
   },
   // Header styles
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
-    backgroundColor: '#fff',
+    padding: 15,
+    backgroundColor: '#4a90e2', // Gradient or solid color
     borderBottomWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#ccc',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 5,
   },
   profileIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    marginRight: 12,
   },
   doctorName: {
     flex: 1,
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#fff',
   },
   callButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#ff6f61',
     borderRadius: 20,
-    paddingHorizontal: 15,
-    paddingVertical: 5,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    shadowColor: '#ff6f61',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 4,
   },
   callButtonText: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   messageList: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     flexGrow: 1,
   },
   messageBubble: {
     maxWidth: '80%',
-    padding: 10,
+    padding: 12,
     borderRadius: 15,
-    marginVertical: 5,
+    marginVertical: 6,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
   },
   doctorBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#e1e1e1',
+    backgroundColor: '#f5f5f5',
   },
   patientBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: '#007bff',
+    backgroundColor: '#4a90e2',
   },
   messageText: {
     color: '#fff',
@@ -127,8 +139,9 @@ const styles = StyleSheet.create({
   },
   timestamp: {
     fontSize: 10,
-    color: '#aaa',
-    marginTop: 5,
+    color: '#ccc',
+    marginTop: 4,
+    textAlign: 'right',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -139,22 +152,32 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#f5f5f5',
     borderRadius: 20,
-    padding: 10,
+    padding: 12,
     marginRight: 10,
+    fontSize: 16,
+    color: '#333',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 4,
   },
   sendButton: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#4a90e2',
     borderRadius: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 18,
     paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    shadowColor: '#4a90e2',
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 5 },
+    elevation: 5,
   },
   sendButtonText: {
     color: '#fff',
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
 });
 

@@ -94,8 +94,6 @@ const AppointmentForm = () => {
     <ScrollView contentContainerStyle={styles.container}>
       
         <Card.Content>
-          <Title style={styles.title}>Appointment Form</Title>
-
           <Subheading style={styles.label}>Select Appointment Type:</Subheading>
           <RNPickerSelect
             placeholder={{ label: 'Select a category', value: null }}
