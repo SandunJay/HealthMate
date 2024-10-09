@@ -1,47 +1,58 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, { useState } from 'react'
-import { destinationData } from '@/assets/dummy'
+import { cardData } from '@/assets/dummy'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { LinearGradient } from 'expo-linear-gradient'
 import { HeartIcon } from 'react-native-heroicons/solid'
 import { useRouter } from 'expo-router'
+import { Colors } from '@/constants/Colors'
 
-const Destination = () => {
+const HealthTip = () => {
   const router = useRouter();
 
+  const [visibleTips, setVisibleTips] = useState(4);  
+
+  const loadMore = () => {
+    if (visibleTips < cardData.length) {
+      setVisibleTips(visibleTips + 4); 
+    }
+  };
+
   return (
-    <View className="mx-4 flex-row justify-between flex-wrap">
+<View>
+      <View className="mx-4 flex-row justify-between flex-wrap">
         {
-            destinationData.map((item, index)=>{
-                return(
-                    <DestinationCard router={router} item={item} key={index}/>
-                )
-            })
-        }    
+          cardData.slice(0, visibleTips).map((item, index) => (
+            <HealthTipCard router={router} item={item} key={index}/>
+          ))
+        }
+      </View>
+      {/* Load more button */}
+      {visibleTips < cardData.length && (
+        <TouchableOpacity onPress={loadMore} className="mt-4">
+          <Text style={{ fontSize: wp(4), color: Colors.main.gray, textAlign: 'center' }}>
+            Load More
+          </Text>
+        </TouchableOpacity>
+      )}
     </View>
   )
 }
 
-const DestinationCard = ({item}) => {
+const HealthTipCard = ({item}) => {
   const router = useRouter();
   const [isFavourite, toggleFavourite] = useState(false)
 
-  const handlePress = () => {
-    console.log('Navigating to: ', `/inventory with id: ${item.id}`);
-    // router.push({
-    //   pathname:'/(protected)/pharmacist/inventoryItem/[id]',
-    //   params: { id: item.id }
-    // })
-    router.push(`/protected/pharmacist/inventory/${item.id}`);
-    // const uri = `/pharmacist/abc/${item.id}`
-    // console.log('Navigating to: ', uri);
-    // router.push(uri);
+  const handlePress = (id) => {
+    console.log('Navigating to: ', `/inventory with id: ${id}`);
+    router.push(`/common/${id}`);
   }; 
 
   return (
+    <View >
     <TouchableOpacity style={{width: wp(44), height: wp(65)}}
-    onPress={handlePress}
-    className='flex justify-end relative p-4 py-6 space-y-2 mb-5'
+      className='flex justify-end relative p-4 py-6 space-y-2 mb-5'
+      onPress={() => handlePress(item.id)}
     >
       <Image
         source={item.image}
@@ -57,12 +68,13 @@ const DestinationCard = ({item}) => {
       />
 
       <TouchableOpacity onPress={()=> toggleFavourite(!isFavourite)} style={{backgroundColor: 'rgba(255,255,255,0.4)'}} className='absolute top-1 right-3 rounded-full p-3'>
-        <HeartIcon size={wp(5)} color={isFavourite? 'red':'white'}/>
+        <HeartIcon size={wp(5)} color={isFavourite? Colors.light.tabIconDefault1: Colors.main.gray}/>
       </TouchableOpacity>
       <Text style={{fontSize: wp(4)}} className="text-white font-semibold">{item.title}</Text>
       <Text style={{fontSize: wp(2.2)}} className="text-white">{item.shortDescription}</Text>
     </TouchableOpacity>
+    </View>
   )
 }
 
-export default Destination
+export default HealthTip

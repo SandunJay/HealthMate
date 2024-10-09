@@ -25,7 +25,7 @@ const ItemForm = () => {
   
   return (
     <View style={styles.container}>
-        <ScrollView showsHorizontalScrollIndicator>
+        <ScrollView showsHorizontalScrollIndicator={false}>
       <Text style={styles.header}>New SKU</Text>
       <TouchableOpacity style={styles.skuButton}>
           <Text style={styles.skuButtonText}>Barcode

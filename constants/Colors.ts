@@ -13,6 +13,7 @@ export const Colors = {
     primary: '#45484A',
     secondary: '#AEB5BB',
     gray: '#D9D9D9',
+    nav: '#B5CFB7'
   },
   light: {
     text: '#11181C',

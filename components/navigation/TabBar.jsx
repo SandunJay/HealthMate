@@ -1,12 +1,13 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import TabBarButton from './TabBarButton';
+import { Colors } from '@/constants/Colors';
 
 const TabBar = ({ state, descriptors, navigation }) => {
 
 
-    const primaryColor = '#789461';
-    const greyColor = '#5c5c5c';
+    const primaryColor = Colors.light.tabIconDefault1;
+    const greyColor = Colors.light.tint1;
   return (
     <View>
     {/* Glassmorphic overlay */}
@@ -70,12 +71,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
     marginHorizontal: 20,
     paddingVertical: 15,
     borderRadius: 25,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.3)', 
+    borderColor: 'rgba(0, 0, 0, 0.3)', 
     shadowColor: 'black',
     shadowOffset: { width: 0, height: 10 },
     shadowRadius: 10,

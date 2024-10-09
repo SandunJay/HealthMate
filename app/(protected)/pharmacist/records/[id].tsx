@@ -4,7 +4,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { recordType } from '@/assets/types';
-import {records, prescription} from '@/assets/dummy'
+import {records, prescriptiondatas} from '@/assets/dummy'
+import { Colors } from '@/constants/Colors';
 
 const Record = () => {
 
@@ -20,7 +21,7 @@ const Record = () => {
 		  const fetchedRecord: recordType | undefined = records.find(item => item.id === id); 
 		  setRecord(fetchedRecord);
 
-			const fetchedPrescriptions = prescription.filter(prescription => prescription.id === id);
+			const fetchedPrescriptions = prescriptiondatas.filter(prescription => prescription.id === id);
 			setReportPrescriptions(fetchedPrescriptions);
 		  setLoading(false);
 		}
@@ -30,7 +31,7 @@ const Record = () => {
 	  if (loading) {
 		return (
 		  <View style={styles.loadingContainer}>
-			<ActivityIndicator size="large" color="#6200EE"/>
+			<ActivityIndicator size="large" color={Colors.light.icon1} />
 		  </View>
 		);
 	  }
@@ -51,6 +52,7 @@ const Record = () => {
         <TouchableOpacity onPress={() => router.push('/pharmacist/records')}>
           <Icon name="arrow-back" size={hp('3%')} color="#000" />
         </TouchableOpacity>
+		<View style={{ flex: 1 }} /> 
         <Text style={styles.headerText}>Record</Text>
         {/* <TouchableOpacity>
           <Icon name="notifications-outline" size={hp('3%')} color="#000" />
@@ -105,8 +107,8 @@ const Record = () => {
 
       {/* Buttons*/}
       <View style={styles.btnContainer}>
-        <TouchableOpacity style={styles.paymentButton}>
-            <Text style={styles.paymentButtonText}>Flag</Text>
+        <TouchableOpacity style={styles.flagButton}>
+            <Text style={styles.flagButtonText}>Flag</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.paymentButton}>
             <Text style={styles.paymentButtonText}>Save</Text>
@@ -135,8 +137,12 @@ const styles = StyleSheet.create({
 	  marginBottom: hp('3%'),
 	},
 	headerText: {
-	  fontSize: hp('2.5%'),
-	  fontWeight: 'bold',
+		fontSize: hp('2.5%'),
+		fontWeight: 'bold',
+		position: 'absolute', // This will make the text centered
+		left: 0,
+		right: 0,
+		textAlign: 'center',  // Align text to center
 	},
 	doctorContainer: {
 	  flexDirection: 'row',
@@ -227,7 +233,7 @@ const styles = StyleSheet.create({
 	  marginBottom: hp('2%'),
 	},
 	paymentButton: {
-	  backgroundColor: '#6C63FF',
+	  backgroundColor: Colors.light.tabIconDefault1,
 	  paddingVertical: hp('1.5%'),
 	  borderRadius: wp('3%'),
 	  width: wp('40%'),
@@ -235,6 +241,18 @@ const styles = StyleSheet.create({
 	},
 	paymentButtonText: {
 	  color: '#fff',
+	  fontSize: hp('2%'),
+	  fontWeight: 'bold',
+	},
+	flagButton: {
+	  backgroundColor: Colors.light.tabIconSelected,
+	  paddingVertical: hp('1.5%'),
+	  borderRadius: wp('3%'),
+	  width: wp('40%'),
+	  alignItems: 'center',
+	},
+	flagButtonText: {
+	  color: '#C96868',
 	  fontSize: hp('2%'),
 	  fontWeight: 'bold',
 	},

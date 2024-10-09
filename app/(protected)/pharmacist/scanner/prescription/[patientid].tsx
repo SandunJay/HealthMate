@@ -4,6 +4,7 @@ import { View, Text, Image, StyleSheet, ScrollView, Pressable, TouchableOpacity,
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { router, Stack, useLocalSearchParams } from 'expo-router';
 import { prescriptions } from '@/assets/dummy';
+import { Colors } from '@/constants/Colors';
 
 const Prescriptions = () => {
   const { patientid } = useLocalSearchParams();
@@ -24,7 +25,7 @@ const Prescriptions = () => {
 
     {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => router.push('/pharmacist/scanner')}>
           <Icon name="arrow-back" size={hp('3%')} color="#000" />
         </TouchableOpacity>
         <Text style={styles.headerText}>Prescriptions</Text>
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#4B0052',
+    backgroundColor: Colors.main.gray,
     borderRadius: 10,
     padding: wp('4%'),
     marginBottom: hp('3%'),

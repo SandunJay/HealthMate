@@ -110,9 +110,9 @@ const NFCScanner = () => {
       <Stack.Screen options={{headerShown:false}}/>
       {/* Header Section */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.push('/pharmacist/')}>
+        {/* <TouchableOpacity style={styles.backButton} onPress={() => router.push('/pharmacist/')}>
           <Icon name="arrow-back" size={hp('3%')} color="#000" />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <Text style={styles.headerText}>Scanner</Text>
         <TouchableOpacity style={styles.menuButton} onPress={openFilterPopup}>
           <Icon1 name="more-vertical" size={hp('3%')} color="#000" />
@@ -170,8 +170,6 @@ const NFCScanner = () => {
 
       {nfcDetected && (
           <TouchableOpacity onPress={()=> router.push(`/pharmacist/scanner/prescription/${patientdid}`)}>
-            {/* /pharmacist/scanner/prescriptionlist?patientId=u002 */}
-         {/* <Link href={'/pharmacist/scanner/prescriptions/'}> */}
         <View style={styles.userContainer}>
         <View style={styles.userCard}>
           <Image
@@ -182,7 +180,6 @@ const NFCScanner = () => {
           <Text style={styles.userAccount}>A/C No - 7890 6754 6689 7753</Text>
         </View>
         </View>
-         {/* </Link> */}
         </TouchableOpacity>
 
       )}
@@ -236,6 +233,7 @@ const styles = StyleSheet.create({
     fontSize: hp('5.5%'),
   },
   headerText: {
+    justifyContent: 'center',
     fontSize: hp('3%'),
     fontWeight: 'bold',
   },

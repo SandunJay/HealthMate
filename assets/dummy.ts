@@ -2,75 +2,116 @@ import { Drug, Patient, Prescription } from "./types";
 
 export const categoriesData = [
     {
-        title: 'Ocean',
-        image: require('../assets/images/icon.png'),
+        title: 'Doctors',
+        image: require('../assets/images/phamacard/img7.jpg')
     },
     {
-        title: 'Woods',
-        image: require('../assets/images/icon.png'),
+        title: 'Drugs',
+        image: require('../assets/images/phamacard/img2.png')
     },
     {
-        title: 'Beach',
-        image: require('../assets/images/icon.png'),
+        title: 'Equipment',
+        image: require('../assets/images/phamacard/img10.jpg')
     },
     {
-        title: 'Hill',
-        image: require('../assets/images/icon.png'),
+        title: 'Nurses',
+        image: require('../assets/images/phamacard/img8.jpg')
     },
     {
-        title: 'Mountain',
-        image: require('../assets/images/icon.png'),
+        title: 'records',
+        image: require('../assets/images/phamacard/img5.jpg')
     },
     {
-        title: 'City',
-        image: require('../assets/images/icon.png'),
+        title: 'statistics',
+        image: require('../assets/images/phamacard/img1.jpg')
     },
 ]
 
 export const constSortCategoryData= ['All', 'Popular', 'Recommended', 'More'];
 
-export const destinationData= [
-    {
-        id: 1,
-        title: "Ofdsfjkkf",
-        duration: '12',
-        distance: 'fds',
-        price: 2432,
-        shortDescription:'fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf ',
-        longDescription: 'fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf ',
-        image: require('../assets/images/icon.png')
-    },
-    {
-        id:2,
-        title: "Ofdsfjkkf",
-        duration: '12',
-        distance: 'fds',
-        price: 2432,
-        shortDescription:'fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf ',
-        longDescription: 'fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf ',
-        image: require('../assets/images/icon.png')
-    },
-    {
-        id:3,
-        title: "Ofdsfjkkf",
-        duration: '12',
-        distance: 'fds',
-        price: 2432,
-        shortDescription:'fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf ',
-        longDescription: 'fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf ',
-        image: require('../assets/images/icon.png')
-    },
-    {
-        id:4,
-        title: "Ofdsfjkkf",
-        duration: '12',
-        distance: 'fds',
-        price: 2432,
-        shortDescription:'fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf ',
-        longDescription: 'fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf fseffsdkfjsdf fhkjsdfh djfksfd fsdk fhdsfkhsduf ',
-        image: require('../assets/images/icon.png')
-    },
+export const cardData = [
+  {
+    id: 1,
+    title: "AI Technology Enhances Breast Cancer Detection",
+    category: "AI in Healthcare",
+    shortDescription: "A new AI tool enhances early detection of breast cancer, helping radiologists identify early-stage cancers more accurately, with the potential to save thousands of lives annually.",
+    longDescription: "The rise of artificial intelligence in healthcare has led to a new AI-driven diagnostic tool that significantly enhances the early detection of breast cancer. This tool can analyze mammograms more quickly and accurately than conventional methods, identifying small abnormalities that might go unnoticed by the human eye. In clinical trials, the AI system has demonstrated its ability to reduce false positives and negatives, ultimately allowing healthcare providers to offer more timely and accurate diagnoses. As breast cancer is one of the leading causes of death in women worldwide, the implementation of this technology is expected to save thousands of lives by detecting tumors in their early stages, when treatment is most effective. Beyond breast cancer, this AI model holds promise for use in other forms of cancer detection, transforming the landscape of radiology and preventative care.",
+    image:  require('../assets/images/phamacard/img9.jpg')
+  },
+  {
+    id: 2,
+    title: "Telemedicine Gains Popularity Amid Pandemic",
+    category: "Telemedicine",
+    shortDescription: "Telemedicine has reshaped healthcare by making remote consultations accessible during the pandemic, and it's likely to remain a significant healthcare trend.",
+    longDescription: "The COVID-19 pandemic has drastically changed the way healthcare is delivered, with telemedicine becoming a crucial service for patients and providers alike. With lockdowns, social distancing, and overwhelmed healthcare systems, patients turned to telemedicine for consultations, check-ups, and even diagnoses. This shift allowed doctors to provide care to individuals without the need for in-person visits, which was especially vital for those with chronic illnesses and patients in rural areas. The convenience of telemedicine has been universally acknowledged, leading to its widespread adoption even post-pandemic. Analysts predict that telemedicine will continue to grow, as both healthcare providers and patients have found the remote consultation model to be effective, safe, and efficient. Insurance companies have also started incorporating telemedicine services into their policies, ensuring that this innovative model will be part of mainstream healthcare for years to come.",
+    image: require('../assets/images/phamacard/img5.jpg')
+  },
+  {
+    id: 3,
+    title: "Gene Therapy Breakthrough Cures Rare Disease",
+    category: "Medical Innovations",
+    shortDescription: "Gene therapy has cured a rare genetic disorder in a clinical trial, marking a major milestone in treating hereditary diseases through genetic modifications.",
+    longDescription: "A groundbreaking clinical trial has successfully demonstrated the power of gene therapy in curing a rare and previously untreatable genetic disorder. Researchers targeted the faulty gene responsible for the disorder and replaced it with a functioning version, effectively reversing the disease's effects. This revolutionary technique, known as gene therapy, involves altering a patient's DNA to treat or prevent disease, and it represents a significant leap forward in medical science. The trial's success provides hope to those suffering from other hereditary diseases, as similar approaches could be applied to a wide range of conditions. Although gene therapy is still in its infancy, the results from this trial indicate that we are on the brink of a new era in personalized medicine, where treatments are tailored to an individual's genetic makeup, offering cures for diseases that were once considered untreatable.",
+    image:  require('../assets/images/phamacard/img6.png')
+  },
+  {
+    id: 4,
+    title: "Wearable Tech Revolutionizes Heart Health Monitoring",
+    category: "Health Tech",
+    shortDescription: "New wearable tech allows real-time heart health monitoring, helping patients and doctors track conditions like arrhythmias and provide better-informed care.",
+    longDescription: "The latest advancements in wearable technology are transforming how individuals monitor their heart health. Devices like smartwatches and fitness trackers now come equipped with sophisticated sensors that track heart rate, detect irregularities such as arrhythmias, and even measure blood oxygen levels. This data is not only valuable for personal health management but can also be shared with healthcare providers in real time, allowing for more accurate diagnoses and timely interventions. For patients with pre-existing heart conditions, these wearables provide peace of mind by offering continuous monitoring and early detection of potential issues. Additionally, wearable technology is helping to bridge the gap between doctor visits, providing a constant stream of health data that can inform treatment plans and prevent emergencies. As wearable devices become more advanced, they are expected to play an even greater role in preventive healthcare.",
+    image:  require('../assets/images/phamacard/img7.jpg')
+  },
+  {
+    id: 5,
+    title: "New COVID-19 Booster Shots Recommended",
+    category: "COVID-19 Updates",
+    shortDescription: "As new COVID-19 variants spread, booster shots are recommended to strengthen immunity and reduce the risk of severe illness and hospitalization.",
+    longDescription: "Health authorities are once again urging the public to receive booster shots in the fight against COVID-19, particularly as new variants of the virus continue to emerge. These booster shots are designed to provide enhanced protection against newer strains, which have shown the ability to partially evade immunity from earlier vaccines. By boosting the immune response, individuals can reduce their chances of severe illness, hospitalization, or death, especially those in high-risk groups such as the elderly and immunocompromised. While vaccination rates have remained steady, booster shots are a critical component of the ongoing battle against COVID-19. Experts emphasize that staying up to date with vaccines is the best way to protect yourself and others as we continue to navigate this pandemic and its ever-evolving threats.",
+    image:  require('../assets/images/phamacard/img10.jpg')
+  },
+  {
+    id: 6,
+    title: "Robotic Surgery Advancements Make Complex Procedures Safer",
+    category: "Surgical Technology",
+    shortDescription: "Robotic surgery is making complex procedures safer and more efficient, with reduced recovery times and improved outcomes for patients worldwide.",
+    longDescription: "Recent advancements in robotic surgery are revolutionizing the field of healthcare by enabling surgeons to perform complex procedures with unprecedented precision and control. These robotic systems, often controlled remotely, allow for smaller incisions, less blood loss, and shorter recovery times compared to traditional surgical methods. Patients who undergo robotic surgery often experience reduced pain and faster healing, leading to better overall outcomes. Furthermore, robotic technology allows surgeons to operate in areas that would otherwise be difficult to reach, making it possible to perform intricate surgeries with minimal risk. As these technologies continue to evolve, they are expected to become the standard in many types of surgeries, from cardiac procedures to cancer treatments, transforming the way we approach surgery in the modern age.",
+    image:  require('../assets/images/phamacard/img3.jpg')
+  },
+  {
+    id: 7,
+    title: "Mental Health Apps Surge in Popularity",
+    category: "Mental Health",
+    shortDescription: "Mental health apps are becoming a popular tool for individuals seeking to manage stress, anxiety, and depression, offering accessible support and resources.",
+    longDescription: "The use of mental health apps has surged in recent years, providing individuals with tools to manage their mental well-being in a convenient and accessible way. These apps offer resources for stress relief, anxiety management, and depression treatment, often including features such as guided meditation, mood tracking, and access to licensed therapists. The rise in popularity of these apps has been accelerated by the global pandemic, as more people seek digital alternatives to traditional therapy due to restrictions and increased demand for mental health services. For many, mental health apps serve as a valuable supplement to in-person therapy or as a standalone resource for managing their mental well-being. As the stigma around mental health continues to decrease, the demand for these digital solutions is expected to grow, providing individuals with the tools they need to take control of their mental health anytime, anywhere.",
+    image:  require('../assets/images/phamacard/img11.jpg')
+  },
+  {
+    id: 8,
+    title: "Global Vaccine Rollout Faces New Challenges",
+    category: "Global Health",
+    shortDescription: "The global vaccine rollout faces challenges as logistical issues, vaccine hesitancy, and new variants complicate efforts to achieve widespread immunity.",
+    longDescription: "The global effort to roll out COVID-19 vaccines has faced numerous challenges, from logistical hurdles to vaccine hesitancy. In many parts of the world, vaccines have become widely available, but distribution remains uneven, particularly in low-income countries where infrastructure and resources are limited. Additionally, new variants of the virus have raised concerns about the efficacy of existing vaccines, prompting discussions about the need for updated formulas. Vaccine hesitancy has also played a significant role in slowing down the progress of global immunization efforts, with misinformation and distrust in healthcare systems contributing to lower vaccination rates in some regions. Despite these challenges, health officials are pushing forward with vaccination campaigns, emphasizing the importance of global cooperation to overcome the barriers and achieve widespread immunity.",
+    image:  require('../assets/images/phamacard/img2.png')
+  },
+  {
+    id: 9,
+    title: "Healthcare Robots Assist in Elderly Care",
+    category: "Assistive Technology",
+    shortDescription: "Robots are being used to assist in elderly care, helping with daily tasks, monitoring health, and providing companionship in care facilities.",
+    longDescription: "In response to the growing demand for elderly care, healthcare robots are now being deployed in care facilities to assist with daily tasks and monitor the health of senior citizens. These robots, designed with user-friendly interfaces, help individuals with activities such as medication reminders, mobility assistance, and vital sign monitoring. In addition to providing practical support, robots are also offering companionship to elderly individuals who may feel isolated, especially in light of restrictions on family visits due to the COVID-19 pandemic. Caregivers and healthcare providers have found that these robots can help improve the quality of life for elderly patients, allowing for a more personalized approach to care. As technology continues to evolve, the role of robots in healthcare is expected to expand, addressing the needs of an aging population and improving care efficiency.",
+    image:  require('../assets/images/phamacard/img8.jpg')
+  },
+  {
+    id: 10,
+    title: "3D Printing in Medicine: The Future of Custom Healthcare",
+    category: "Medical Technology",
+    shortDescription: "3D printing is revolutionizing medicine, allowing for custom-made prosthetics, implants, and even organ scaffolds to be created on demand.",
+    longDescription: "The advent of 3D printing technology is revolutionizing the field of medicine by allowing for the creation of custom-made medical devices, implants, and prosthetics. This technology enables the production of items that are perfectly tailored to the needs of individual patients, improving outcomes and enhancing comfort. Beyond prosthetics, 3D printing is also being used to create organ scaffolds, offering the potential for organ regeneration and transplants in the future. Surgeons are already using 3D-printed models to plan complex surgeries, allowing them to practice on patient-specific replicas before entering the operating room. As the technology continues to advance, the cost of 3D printing medical devices is expected to decrease, making it more accessible to healthcare providers worldwide. This innovation is poised to transform personalized medicine and offer new solutions for patients with unique medical needs.",
+    image:  require('../assets/images/phamacard/img4.jpg')
+  }
 ];
+
 
 
 export const inventoryData = [
