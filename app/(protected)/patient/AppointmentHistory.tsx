@@ -83,27 +83,32 @@ function AppointmentHistory() {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: 'white',
+    backgroundColor: 'white', // Main container should be white
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
-    color: '#2E8B57',
+    color: '#199A8E', // Main color
   },
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
-    padding: 12,
+    marginBottom: 16, // Increased margin for better spacing
+    padding: 16, // Increased padding
     borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 4,
-    backgroundColor: '#E0F7E5',
+    borderColor: '#ddd', // Lighter border color
+    borderRadius: 10, // Increased border radius for a softer look
+    backgroundColor: 'white', // Changed to white for item background
+    shadowColor: '#000', // Shadow for card effect
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2, // For Android shadow effect
   },
   image: {
-    width: 50,
-    height: 50,
+    width: 60, // Increased image size
+    height: 60,
     marginRight: 12,
     borderRadius: 4,
   },
@@ -111,9 +116,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemText: {
-    color: '#2E8B57',
-    fontSize: 18,
+    color: '#199A8E', // Main color for text
+    fontSize: 16, // Slightly reduced font size for description
     fontWeight: 'bold',
+    marginBottom: 4, // Added margin for better text separation
+  },
+  itemDate: {
+    color: '#666', // A softer color for date text
+    fontSize: 14, // Smaller font size for date
+  },
+  itemTime: {
+    color: '#666', // A softer color for time text
+    fontSize: 14, // Smaller font size for time
   },
   modalOverlay: {
     flex: 1,
@@ -123,7 +137,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: '80%',
-    backgroundColor: 'white',
+    backgroundColor: 'white', // Modal background should be white
     borderRadius: 10,
     padding: 20,
     elevation: 5,
@@ -132,12 +146,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#2E8B57',
+    color: '#199A8E', // Main color for modal title
   },
   modalText: {
     marginVertical: 4,
     color: '#333',
   },
 });
+
+
 
 export default AppointmentHistory;

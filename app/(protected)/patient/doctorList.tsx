@@ -51,16 +51,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff', // Main container background set to white
   },
   searchInput: {
     height: 50,
-    borderColor: '#007bff',
+    borderColor: '#199A8E', // Border color set to #199A8E for accent
     borderWidth: 1,
     borderRadius: 25,
     paddingHorizontal: 20,
     marginBottom: 10,
     fontSize: 16,
+    color: '#333', // Text color set to dark gray for readability
   },
   list: {
     paddingTop: 20,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: '#e0f7e0', // Light green background
+    backgroundColor: '#f0f0f0', // Light gray background for doctor items
     marginBottom: 10,
     borderRadius: 10,
     shadowColor: '#000',
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
   },
   doctorName: {
-    color: '#007bff', // Dark green color
+    color: '#199A8E', // Text color set to main color for visibility
     fontSize: 18,
     fontWeight: 'bold',
   },

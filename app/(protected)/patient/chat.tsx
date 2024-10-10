@@ -70,14 +70,14 @@ const Chat = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#fff', // Set background to white
   },
   // Header styles
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     padding: 15,
-    backgroundColor: '#4a90e2', // Gradient or solid color
+    backgroundColor: '#199A8E', // Updated to use main color as background
     borderBottomWidth: 1,
     borderColor: '#ccc',
     shadowColor: '#000',
@@ -95,25 +95,21 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#fff', // Text color is white
   },
   callButton: {
-    backgroundColor: '#ff6f61',
+    backgroundColor: '#fff', // Button background is white
     borderRadius: 20,
     paddingHorizontal: 20,
     paddingVertical: 8,
-    shadowColor: '#ff6f61',
+    shadowColor: '#199A8E', // Shadow uses the main color
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 3 },
     elevation: 4,
   },
   callButtonText: {
-    color: '#fff',
+    color: '#199A8E', // Text on the button uses the main color
     fontWeight: '600',
-  },
-  messageList: {
-    paddingHorizontal: 15,
-    flexGrow: 1,
   },
   messageBubble: {
     maxWidth: '80%',
@@ -127,14 +123,14 @@ const styles = StyleSheet.create({
   },
   doctorBubble: {
     alignSelf: 'flex-start',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#fff', // Doctor's message bubble is white
   },
   patientBubble: {
     alignSelf: 'flex-end',
-    backgroundColor: '#4a90e2',
+    backgroundColor: '#199A8E', // Patient's message bubble uses the main color
   },
   messageText: {
-    color: '#fff',
+    color: '#fff', // Message text is white
     fontSize: 16,
   },
   timestamp: {
@@ -146,13 +142,13 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff', // Input section background is white
     borderTopWidth: 1,
     borderColor: '#ddd',
   },
   textInput: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#f5f5f5', // Text input background
     borderRadius: 20,
     padding: 12,
     marginRight: 10,
@@ -164,21 +160,22 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   sendButton: {
-    backgroundColor: '#4a90e2',
+    backgroundColor: '#199A8E', // Send button background uses the main color
     borderRadius: 20,
     paddingHorizontal: 18,
     paddingVertical: 10,
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#4a90e2',
+    shadowColor: '#199A8E', // Send button shadow also uses the main color
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 5 },
     elevation: 5,
   },
   sendButtonText: {
-    color: '#fff',
+    color: '#fff', // Send button text is white
     fontWeight: '600',
   },
 });
+
 
 export default Chat;
