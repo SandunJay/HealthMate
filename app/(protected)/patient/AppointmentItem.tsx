@@ -172,39 +172,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#ffffff', // White background
+    backgroundColor: '#ffffff', // White background for the entire container
   },
   card: {
     marginVertical: 10,
-    borderRadius: 10,
+    borderRadius: 12, // Smooth corners for the card
     elevation: 5,
     backgroundColor: '#ffffff', // White card background
-    borderColor: '#28a745', // Green border
-    borderWidth: 1,
+    borderColor: '#199A8E', // Primary color for the border
+    borderWidth: 1.5, // Slightly thicker border
   },
   heading: {
-    fontSize: 24,
+    fontSize: 26, // Slightly larger font size for the heading
     fontWeight: 'bold',
-    color: '#28a745', // Green heading color
-    marginBottom: 10,
+    color: '#199A8E', // Primary color for the heading
+    marginBottom: 12, // More space below the heading
     textAlign: 'center',
   },
   detail: {
-    fontSize: 16,
-    marginVertical: 5,
-    color: '#333',
+    fontSize: 17, // Slightly larger font for the details
+    marginVertical: 6, // Spacing between the detail lines
+    color: '#333', // Dark text for the details
   },
   buttonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
+    justifyContent: 'space-around', // Evenly spaced buttons
+    marginTop: 25, // Extra margin on top of buttons
   },
   button: {
     flex: 1,
-    marginHorizontal: 5,
-    paddingVertical: 8,
-    borderRadius: 5,
-    backgroundColor: '#28a745', // Green button background
+    marginHorizontal: 8, // Spacing between buttons
+    paddingVertical: 10, // Larger button padding
+    borderRadius: 6, // Smooth corners for buttons
+    backgroundColor: '#199A8E', // Primary color for the button background
   },
   noDetailsContainer: {
     flex: 1,
@@ -212,9 +212,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   noDetails: {
-    fontSize: 18,
-    color: '#333',
+    fontSize: 20, // Larger font size for no-details message
+    color: '#199A8E', // Primary color for no-details message
   },
 });
+
+
 
 export default AppointmentItem;

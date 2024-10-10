@@ -114,25 +114,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f0fff4',
+    backgroundColor: '#ffffff', // White background
     justifyContent: 'center',
   },
   appointmentItem: {
     flexDirection: 'row',
     padding: 20,
     borderWidth: 1,
-    borderColor: '#28a745',
+    borderColor: '#199A8E', // Primary color for border
     borderRadius: 12,
     marginBottom: 15,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff', // White background for each appointment item
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 4,
   },
   expandedItem: {
-    backgroundColor: '#e0f7e4',
-    borderColor: '#28a745',
+    backgroundColor: '#E6F8F6', // Light shade of primary color for expanded items
+    borderColor: '#199A8E', // Primary color for expanded item border
   },
   imageContainer: {
     marginRight: 15,
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   doctorText: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#28a745',
+    color: '#199A8E', // Primary color for doctor name
     marginBottom: 8,
   },
   detailsContainer: {
@@ -163,20 +163,21 @@ const styles = StyleSheet.create({
   },
   addButton: {
     marginTop: 20,
-    backgroundColor: '#28a745',
+    backgroundColor: '#199A8E', // Primary color for the button background
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center',
-    shadowColor: '#28a745',
+    shadowColor: '#199A8E', // Shadow with the primary color
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 5 },
     elevation: 4,
   },
   addButtonText: {
-    color: '#fff',
+    color: '#ffffff', // White text for the button
     fontSize: 18,
     fontWeight: '600',
   },
 });
+
 
 export default Appointment;
