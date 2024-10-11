@@ -13,5 +13,9 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
+<<<<<<< HEAD
   ]
+=======
+, "app/index.jsx"  ]
+>>>>>>> parent of 279c6f5 (updated profile)
 }
