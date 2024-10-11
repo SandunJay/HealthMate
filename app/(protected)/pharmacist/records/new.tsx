@@ -1,11 +1,15 @@
 import { Colors } from '@/constants/Colors';
 import { router, Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from  'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { Entypo, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 
 const ItemForm = () => {
+  const { isDarkMode } = useGlobalContext();
+  const { isIos} = useGlobalContext();
   const [partName, setPartName] = useState('');
   const [specifications, setSpecifications] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -22,119 +26,108 @@ const ItemForm = () => {
     setSelectedCategory(category);
   };
 
-  const handleBarcodePress  ={
-  }
+  const handleBarcodePress = () => {
+    // Implement barcode scanning logic here
+  };
   
   return (
-    <View style={styles.container}>
-        <Stack.Screen options={{headerShown:false}}/>
-        <ScrollView showsVerticalScrollIndicator={false}>
+    <View style={[styles.container, { backgroundColor: isDarkMode ? Colors.dark.background : Colors.light.background, paddingTop: isIos ? hp('6%') : hp('3%') }]}>
+      <Stack.Screen options={{headerShown:false}}/>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity onPress={() => router.push('/pharmacist/records')}>
-          <Icon name="arrow-back" size={hp('3%')} color="#000" />
+          {/* <Icon name="arrow-back" size={hp('3%')} color={isDarkMode ? Colors.dark.text : Colors.light.text} /> */}
+          <Entypo name='align-left' size={hp('3%')} color={isDarkMode ? Colors.dark.text : Colors.light.text} />
         </TouchableOpacity>
 
-      <Text style={styles.header}>New SKU</Text>
-      <TouchableOpacity style={styles.skuButton}>
-          <Text style={styles.skuButtonText}>Barcode
-            <Icon
-                name='barcode'
-                size={wp('5%')}
-                color='#fff'
-                onPress={()=>{handleBarcodePress}}
+        <Text style={[styles.header, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>New SKU</Text>
+        <TouchableOpacity style={[styles.skuButton, { backgroundColor: isDarkMode ? Colors.dark.tabIconDefault1 : Colors.light.tabIconDefault1 }]}>
+          <Text style={styles.skuButtonText}>
+            Barcode
+            <MaterialCommunityIcons
+              name='barcode-scan'
+              size={wp('5%')}
+              color='#fff'
+              onPress={handleBarcodePress}
             />
           </Text>
-     </TouchableOpacity>
+        </TouchableOpacity>
 
-      {/* Part Name Input */}
-      <TextInput
-        style={styles.input}
-        placeholder="Part Name"
-        value={partName}
-        onChangeText={setPartName}
-      />
-
-      {/* Categories */}
-      <Text style={styles.sectionTitle}>Category</Text>
-      <View style={styles.categoriesContainer}>
-        {categories.map((category, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.categoryButton,
-              selectedCategory === category && styles.selectedCategoryButton
-            ]}
-            onPress={() => handleCategorySelect(category)}
-          >
-            <Text
-              style={[
-                styles.categoryButtonText,
-                selectedCategory === category && styles.selectedCategoryButtonText
-              ]}
-            >
-              {category}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
-
-      {/* Specifications Input */}
-      <Text style={styles.sectionTitle}>Specifications</Text>
-      <TextInput
-        style={styles.specificationsInput}
-        placeholder="Specifications"
-        value={specifications}
-        onChangeText={setSpecifications}
-        multiline
-      />
-
-    {/* Specifications Input */}
-    <Text style={styles.sectionTitle}>Specifications</Text>
         <TextInput
-        style={styles.specificationsInput}
-        placeholder="Specifications"
-        value={specifications}
-        onChangeText={setSpecifications}
-        multiline
-      />
+          style={[styles.input, { 
+            backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.background,
+            color: isDarkMode ? Colors.dark.text : Colors.light.text,
+            borderColor: isDarkMode ? Colors.dark.border : Colors.light.border
+          }]}
+          placeholder="Part Name"
+          placeholderTextColor={isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary}
+          value={partName}
+          onChangeText={setPartName}
+        />
 
-    {/* Part Name Input */}
-    <TextInput
-        style={styles.input}
-        placeholder="Part Name"
-        value={partName}
-        onChangeText={setPartName}
-      />
-    {/* Part Name Input */}
-    <TextInput
-        style={styles.input}
-        placeholder="Part Name"
-        value={partName}
-        onChangeText={setPartName}
-      />
-      {/* Part Name Input */}
-    <TextInput
-        style={styles.input}
-        placeholder="Part Name"
-        value={partName}
-        onChangeText={setPartName}
-      />
-      {/* Part Name Input */}
-    <TextInput
-        style={styles.input}
-        placeholder="Part Name"
-        value={partName}
-        onChangeText={setPartName}
-      />
+        <Text style={[styles.sectionTitle, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Category</Text>
+        <View style={styles.categoriesContainer}>
+          {categories.map((category, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.categoryButton,
+                selectedCategory === category && styles.selectedCategoryButton,
+                { backgroundColor: isDarkMode ? Colors.dark.cardBackground : '#E0E0E0' }
+              ]}
+              onPress={() => handleCategorySelect(category)}
+            >
+              <Text
+                style={[
+                  styles.categoryButtonText,
+                  selectedCategory === category && styles.selectedCategoryButtonText,
+                  { color: isDarkMode ? Colors.dark.text : Colors.light.text }
+                ]}
+              >
+                {category}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
 
-      {/* Buttons */}
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.cancelButton} onPress={() => router.push('/pharmacist/records')}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.submitButton}>
-          <Text style={styles.buttonText}>Submit</Text>
-        </TouchableOpacity>
-      </View>
+        <Text style={[styles.sectionTitle, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Specifications</Text>
+        <TextInput
+          style={[styles.specificationsInput, { 
+            backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.background,
+            color: isDarkMode ? Colors.dark.text : Colors.light.text,
+            borderColor: isDarkMode ? Colors.dark.border : Colors.light.border
+          }]}
+          placeholder="Specifications"
+          placeholderTextColor={isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary}
+          value={specifications}
+          onChangeText={setSpecifications}
+          multiline
+        />
+
+        {/* Additional input fields */}
+        {[1, 2, 3, 4].map((_, index) => (
+          <TextInput
+            key={index}
+            style={[styles.input, { 
+              backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.background,
+              color: isDarkMode ? Colors.dark.text : Colors.light.text,
+              borderColor: isDarkMode ? Colors.dark.border : Colors.light.border
+            }]}
+            placeholder={`Additional Field ${index + 1}`}
+            placeholderTextColor={isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary}
+          />
+        ))}
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity 
+            style={[styles.cancelButton, { backgroundColor: isDarkMode ? Colors.dark.cardBackground : '#E0E0E0' }]} 
+            onPress={() => router.push('/pharmacist/records')}
+          >
+            <Text style={[styles.buttonText, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={[styles.submitButton, { backgroundColor: isDarkMode ? Colors.dark.tabIconDefault1 : Colors.light.tabIconDefault1 }]}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
       </ScrollView>
     </View>
   );
@@ -143,9 +136,7 @@ const ItemForm = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
     padding: wp('5%'),
-
   },
   header: {
     fontSize: wp('6%'),
@@ -156,15 +147,13 @@ const styles = StyleSheet.create({
     fontSize: hp('5.5%'),
   },
   skuButton: {
-    position: 'absolute', // Move it to the top-right
-    right: wp('1%'), // Adjust the distance from the right side
-    top: hp('3.00%'), // Adjust the distance from the top side
+    position: 'absolute',
+    right: wp('1%'),
+    top: hp('3.00%'),
     flexDirection: 'row',
-    backgroundColor: Colors.light.tabIconDefault1,
     borderRadius: wp('2%'),
     paddingVertical: hp('1%'),
-    // paddingHorizontal: wp('3%'),
-    width: wp('25%'), // Set width to make the button smaller
+    width: wp('25%'),
     justifyContent: 'center',
   },
   skuButtonText: {
@@ -173,7 +162,6 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 10,
     padding: wp('3%'),
     marginBottom: hp('2%'),
@@ -191,17 +179,15 @@ const styles = StyleSheet.create({
   categoryButton: {
     paddingVertical: hp('1%'),
     paddingHorizontal: wp('3%'),
-    backgroundColor: '#E0E0E0',
     borderRadius: 20,
     marginRight: wp('2%'),
     marginBottom: hp('1%'),
   },
   selectedCategoryButton: {
-    backgroundColor: '#007BFF',
+    backgroundColor: Colors.light.tabIconDefault1,
   },
   categoryButtonText: {
     fontSize: wp('4%'),
-    color: '#000',
   },
   selectedCategoryButtonText: {
     color: '#fff',
@@ -209,7 +195,6 @@ const styles = StyleSheet.create({
   specificationsInput: {
     height: hp('15%'),
     borderWidth: 1,
-    borderColor: '#ccc',
     borderRadius: 10,
     padding: wp('3%'),
     textAlignVertical: 'top',
@@ -220,13 +205,11 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   cancelButton: {
-    backgroundColor: '#E0E0E0',
     paddingVertical: hp('1.5%'),
     paddingHorizontal: wp('10%'),
     borderRadius: 10,
   },
   submitButton: {
-    backgroundColor: '#007BFF',
     paddingVertical: hp('1.5%'),
     paddingHorizontal: wp('10%'),
     borderRadius: 10,

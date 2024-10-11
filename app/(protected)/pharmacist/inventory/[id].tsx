@@ -1,184 +1,206 @@
-// import React, { useState } from 'react';
-// import { View, Text, Image,SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
-// import { useLocalSearchParams, useRouter } from 'expo-router';
-// import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-// import { StatusBar } from 'expo-status-bar';
-// import { ChevronLeftIcon, ClockIcon, HeartIcon } from 'react-native-heroicons/solid';
-// import { theme } from '@/constants/Colors';
-// import { destinationData } from '@/assets/dummy';
-
-
-// const InventoryItem = () => {
-//   const { id } = useLocalSearchParams(); 
-//   const router = useRouter();
-//   const item = destinationData.find(d => d.id === Number(id)); 
-
-
-//   if (!item) {
-//     return <Text>Item not found</Text>;
-//   }
-//   const [isFavourite, toggleFavourite] = useState(false)
-
-//   return (
-//     <View className='bg-white flex-1'>
-//       <Image
-//         source={item.image}
-//         style={{width: wp(100), height: hp(55)}}
-//       />
-//       <StatusBar style='light' />
-
-//       {/* back button */}
-//       <SafeAreaView className='flex-row justify-between items-center w-full absolute'>
-//         <TouchableOpacity
-//           onPress={() => router.back()}
-//           className='p-2 rounded-full ml-4'
-//           style={{backgroundColor: 'rgba(255,255,255,0.5)'}}
-//         >
-//           <ChevronLeftIcon size={wp(7)} color='white' strokeWidth={4}/>
-//         </TouchableOpacity>
-
-//         <TouchableOpacity
-//           onPress={() => toggleFavourite(!isFavourite)}
-//           className='p-2 rounded-full mr-4'
-//           style={{backgroundColor: 'rgba(255,255,255,0.5)'}}
-//         >
-//           <HeartIcon size={wp(7)} color={isFavourite? 'red':'white'} strokeWidth={4}/>
-//         </TouchableOpacity>
-//       </SafeAreaView>
-
-//       {/* Title description and button */}
-//       <View style={{borderTopLeftRadius: 40, borderTopRightRadius: 40}} className="px-5 flex flex-1 justify-between bg-white pt-8 -mt-14">
-//         <ScrollView showsVerticalScrollIndicator={false} className="space-y-5">
-//           <View className="flex-row jsutify-between items-start">
-//             <Text style={{fontSize: wp(7)}} className="font-bold flex-1 text-neutral-700">
-//               {item.title}
-//             </Text>
-//             <Text style={{fontSize: wp(7), color:theme.text}} className="font-semibold">
-//               ${item.price}
-//             </Text>
-//           </View>
-//           <Text style={{fontSize: wp(3.7)}} className='text-neutral-700 tracking-wider mb-2'>
-//             {item.longDescription}
-//           </Text>
-//           <View className="flex-row justify-between mx-1">
-//             <View className='flex-row space-x-2 items-start'>
-//               <ClockIcon size={wp(7)} color={'skyblue'}/>
-//               <View className="flex space-y-2">
-//                 <Text style={{fontSize: wp(4.5)}} className='font-bold text-neutral-700'>{item.duration}</Text>
-//                 <Text className="text-neutral-600 tracking-wide">Duration</Text>
-//               </View>
-//             </View>
-//             <View className='flex-row space-x-2 items-start'>
-//               <ClockIcon size={wp(7)} color={'skyblue'}/>
-//               <View className="flex space-y-2">
-//                 <Text style={{fontSize: wp(4.5)}} className='font-bold text-neutral-700'>{item.duration}</Text>
-//                 <Text className="text-neutral-600 tracking-wide">Duration</Text>
-//               </View>
-//             </View>
-//             <View className='flex-row space-x-2 items-start'>
-//               <ClockIcon size={wp(7)} color={'skyblue'}/>
-//               <View className="flex space-y-2">
-//                 <Text style={{fontSize: wp(4.5)}} className='font-bold text-neutral-700'>{item.duration}</Text>
-//                 <Text className="text-neutral-600 tracking-wide">Duration</Text>
-//               </View>
-//             </View>
-//           </View>
-//         </ScrollView>
-//         <TouchableOpacity style={{backgroundColor:theme.bg(0.7), height: wp(15), width: wp(50) }} className="mb-6 mx-auto flex justify-center items-center rounded-full">
-//           <Text  className="text-white font-bold" style={{fontSize: wp(5.5)}}>Book now</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// }
-
-// export default InventoryItem;
-
-
-import React, { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Alert } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, Animated, Modal, TextInput, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Icon from 'react-native-vector-icons/Ionicons';
-import QRCode from 'react-native-qrcode-svg'; // QR code generator
+import { Entypo } from '@expo/vector-icons';
+import QRCode from 'react-native-qrcode-svg';
 import { InventoryItem as ItemType } from '@/assets/types';
-import { inventoryData } from '@/assets/dummy';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { Colors } from '@/constants/Colors';
+import { getInventoryItem, updateInventoryItem } from '@/lib/appwrite';
 
 const InventoryItem = () => {
   const router = useRouter();
-  const { id } = useLocalSearchParams();
-
-  const item: ItemType | undefined = inventoryData.find((data) => data.id === id);
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { isDarkMode } = useGlobalContext();
+    const { isIos} = useGlobalContext();
+  const [item, setItem] = useState<ItemType | undefined>(undefined);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [modalAnimation] = useState(new Animated.Value(0));
+  const [showManualEntryModal, setShowManualEntryModal] = useState(false);
+  const [stockAmount, setStockAmount] = useState('');
 
   useEffect(() => {
-    if (!item) {
-      Alert.alert('Item Not Found', 'The selected item does not exist.', [
-        { text: 'OK', onPress: () => router.back() },
-      ]);
-    }
-  }, [item]);
+    console.log("ID is: " + id);
+    const fetchItemData = async () => {
+      try {
+        const response = await getInventoryItem(id);
+        const itemData: ItemType = {
+          $id: response.$id,
+          name: response.name,
+          category: response.category,
+          quantity: response.quantity,
+          sku: response.sku,
+          description: response.description,
+          manufacturer: response.manufacturer,
+          expiration:formatDate(response.expiration),
+        };
+        setItem(itemData);
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Error', 'Failed to fetch item data.', [
+          { text: 'OK', onPress: () => router.back() },
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (!item) {
-    return null;
+    fetchItemData();
+  }, [id]);
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  };
+
+  const openManualEntryModal = () => {
+    Animated.timing(modalAnimation, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setShowManualEntryModal(true));
+  };
+
+  const closeManualEntryModal = () => {
+    Animated.timing(modalAnimation, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start(() => setShowManualEntryModal(false));
+  };
+
+const handleManualSubmit = async () => {
+  const amountToAdd = parseInt(stockAmount, 10);
+  if (isNaN(amountToAdd) || amountToAdd <= 0) {
+    Alert.alert('Invalid Input', 'Please enter a valid stock amount.');
+    return;
   }
 
-  // const renderOrderItem = ({ item }:{item: ItemType}) => (
-  //   <View style={styles.orderItem}>
-  //     <View style={styles.orderDetails}>
-  //       <Text style={styles.orderAmount}>{item.amount}</Text>
-  //       <Text style={styles.orderNumber}>{item.sku}</Text>
-  //       <Text style={styles.orderCustomer}>{item.customer}</Text>
-  //     </View>
-  //     <Icon name="chevron-forward" size={hp('3%')} color="#9CA3AF" />
-  //   </View>
-  // );
+  try {
+    await updateInventoryItem(id, amountToAdd); // Call the update function
+    
+    // Update the item quantity locally without making another API call
+    setItem((prevItem) => {
+      if (prevItem) {
+        return {
+          ...prevItem,
+          quantity: prevItem.quantity + amountToAdd, // Update the quantity in the item state
+        };
+      }
+      return prevItem;
+    });
+
+    Alert.alert('Success', `Added ${amountToAdd} units to ${item?.name}`);
+    setStockAmount(''); // Clear the input field
+  } catch (error) {
+    Alert.alert('Error', 'Failed to update inventory item.');
+  } finally {
+    closeManualEntryModal();
+  }
+};
+
+  // Render a loading indicator while data is being fetched
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={isDarkMode ? Colors.dark.text : Colors.light.text} />
+      </View>
+    );
+  }
+
+  // Check if item is undefined and handle accordingly
+  if (!item) {
+    Alert.alert('Item Not Found', 'The selected item does not exist.', [
+      { text: 'OK', onPress: () => router.back() },
+    ]);
+    return null; // Prevent further rendering if item is not found
+  }
 
   return (
-    <View style={styles.container}>
-      <Stack.Screen options={{headerShown:false}}/>
-      {/* Header */}
+    <View style={[styles.container, { backgroundColor: isDarkMode ? Colors.dark.background : Colors.light.background, paddingTop: isIos ? hp('5%') : hp('3%') }]}>
+      <Stack.Screen options={{ headerShown: false }} />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Icon name="arrow-back" size={hp('3%')} color="#000" />
+          <Entypo name='align-left' size={hp('3%')} color={isDarkMode ? Colors.dark.text : Colors.light.text} />
         </TouchableOpacity>
-        <Text style={styles.headerText}>{item.name}</Text>
+        <Text style={[styles.headerText, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>{item.name}</Text>
       </View>
 
-      {/* Add Stock Button */}
-      <TouchableOpacity style={styles.addStockButton}>
-        <Text style={styles.addStockButtonText}>+ Add Stock</Text>
-      </TouchableOpacity>
+    <ScrollView>
+        <TouchableOpacity onPress={openManualEntryModal} style={[styles.addStockButton, { backgroundColor: isDarkMode ? Colors.dark.icon : Colors.light.icon }]}>
+          <Text style={styles.addStockButtonText}>+ Add Stock</Text>
+        </TouchableOpacity>
 
-      {/* Product Details */}
-      <View style={styles.detailRow}>
-        <Text style={styles.detailLabel}>ID</Text>
-        <Text style={styles.detailValue}>{item.id}</Text>
-      </View>
-      <View style={styles.detailRow}>
-        <Text style={styles.detailLabel}>Category</Text>
-        <Text style={styles.detailValue}>{item.category}</Text>
-      </View>
-      <View style={styles.detailRow}>
-        <Text style={styles.detailLabel}>Quantity</Text>
-        <Text style={styles.detailValue}>{item.quantity} units</Text>
-      </View>
-      <View style={styles.detailRow}>
-        <Text style={styles.detailLabel}>Expiration</Text>
-        <Text style={styles.detailValue}>5/25/2025</Text>
-      </View>
+        <View style={styles.detailRow}>
+          <Text style={[styles.detailLabel, { color: isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary }]}>ID</Text>
+          <Text style={[styles.detailValue, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>{item.$id}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <Text style={[styles.detailLabel, { color: isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary }]}>Category</Text>
+          <Text style={[styles.detailValue, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>{item.category}</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <Text style={[styles.detailLabel, { color: isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary }]}>Quantity</Text>
+          <Text style={[styles.detailValue, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>{item.quantity} units</Text>
+        </View>
+        <View style={styles.detailRow}>
+          <Text style={[styles.detailLabel, { color: isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary }]}>Expiration</Text>
+          <Text style={[styles.detailValue, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>{item.expiration}</Text>
+        </View>
 
-      {/* Supplier Section */}
-      <TouchableOpacity style={styles.supplierContainer}>
-        <Text style={styles.supplierLabel}>Manufacturer</Text>
-        <Text style={styles.supplierName}>{item.manufacturer}</Text>
-        <Icon name="chevron-forward" size={hp('3%')} color="#9CA3AF" />
-      </TouchableOpacity>
+        <TouchableOpacity style={[styles.supplierContainer, { backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.cardBackground }]}>
+          <Text style={[styles.supplierLabel, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Manufacturer</Text>
+          <Text style={[styles.supplierName, { color: isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary }]}>{item.manufacturer}</Text>
+        </TouchableOpacity>
 
-      {/* QR Code */}
-      <View style={styles.barcodeContainer}>
-        <QRCode value={item.sku} size={150} />
-        <Text style={styles.barcodeText}>{item.sku}</Text>
-      </View>
+        <View style={styles.barcodeContainer}>
+          <QRCode 
+            value={item.sku} 
+            size={150} 
+            color={isDarkMode ? Colors.dark.text : Colors.light.text} 
+            backgroundColor={isDarkMode ? Colors.dark.background : Colors.light.background} 
+          />
+          <Text style={[styles.barcodeText, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>{item.sku}</Text>
+        </View>
+
+        {/* New container for the description */}
+        <View style={[styles.descriptionContainer, { backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.cardBackground }]}>
+          <Text style={[styles.descriptionLabel, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Description</Text>
+          <Text style={[styles.descriptionText, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>{item.description}</Text>
+        </View>
+
+      </ScrollView>
+      <Modal
+        transparent
+        visible={showManualEntryModal}
+        animationType="slide"
+        onRequestClose={closeManualEntryModal}
+      >
+        <View style={styles.manualEntryContainer}>
+          <View style={[styles.manualEntryContent, { backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.background }]}>
+            <TextInput
+              placeholder="Enter new stock amount"
+              placeholderTextColor={isDarkMode ? Colors.dark.textSecondary : '#ccc'}
+              value={stockAmount}
+              onChangeText={setStockAmount}
+              style={[styles.manualEntryInput, { 
+                backgroundColor: isDarkMode ? Colors.dark.background : Colors.light.background,
+                color: isDarkMode ? Colors.dark.text : Colors.light.text,
+                borderColor: isDarkMode ? Colors.dark.border : '#ccc'
+              }]}
+            />
+            <View style={styles.buttonRow}>
+              <TouchableOpacity onPress={closeManualEntryModal} style={[styles.cancelButton, { backgroundColor: isDarkMode ? Colors.dark.cardBackground : '#ddd' }]}>
+                <Text style={[styles.buttonText, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Cancel</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleManualSubmit} style={[styles.submitButton, { backgroundColor: isDarkMode ? Colors.dark.tabIconDefault1 : Colors.light.tabIconDefault1 }]}>
+                <Text style={styles.buttonText}>Submit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
@@ -187,7 +209,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: wp('5%'),
-    backgroundColor: '#fff',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.light.background, // or use your dark mode color
   },
   header: {
     flexDirection: 'row',
@@ -200,7 +227,6 @@ const styles = StyleSheet.create({
     marginLeft: wp('4%'),
   },
   addStockButton: {
-    backgroundColor: '#374151',
     paddingVertical: hp('1%'),
     borderRadius: wp('2%'),
     alignItems: 'center',
@@ -217,7 +243,6 @@ const styles = StyleSheet.create({
     marginVertical: hp('0.8%'),
   },
   detailLabel: {
-    color: '#6B7280',
     fontSize: hp('2%'),
   },
   detailValue: {
@@ -228,7 +253,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    backgroundColor: '#F3F4F6',
     padding: hp('2%'),
     borderRadius: wp('2%'),
     marginVertical: hp('2%'),
@@ -238,7 +262,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   supplierName: {
-    color: '#6B7280',
     fontSize: hp('2%'),
   },
   barcodeContainer: {
@@ -249,36 +272,55 @@ const styles = StyleSheet.create({
     fontSize: hp('2%'),
     marginTop: hp('1%'),
   },
-  recentOrdersTitle: {
-    fontSize: hp('2.5%'),
-    fontWeight: 'bold',
+  // New styles for the description container
+  descriptionContainer: {
+    padding: hp('2%'),
+    borderRadius: wp('2%'),
     marginVertical: hp('2%'),
   },
-  orderItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: hp('1.5%'),
-    borderBottomWidth: 1,
-    borderColor: '#E5E7EB',
-  },
-  orderDetails: {
-    flex: 1,
-  },
-  orderAmount: {
+  descriptionLabel: {
     fontSize: hp('2%'),
     fontWeight: 'bold',
   },
-  orderNumber: {
+  descriptionText: {
     fontSize: hp('2%'),
-    color: '#6B7280',
+    marginTop: hp('1%'),
   },
-  orderCustomer: {
-    fontSize: hp('1.8%'),
-    color: '#9CA3AF',
+    manualEntryContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
   },
-  listContent: {
-    paddingBottom: hp('10%'),
+  manualEntryContent: {
+    padding: wp('5%'),
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    elevation: 10,
+  },
+  manualEntryInput: {
+    borderWidth: 1,
+    padding: hp('1.5%'),
+    borderRadius: 10,
+    marginBottom: hp('2%'),
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  cancelButton: {
+    padding: hp('1.5%'),
+    borderRadius: 10,
+    width: '45%',
+    alignItems: 'center',
+  },
+  submitButton: {
+    padding: hp('1.5%'),
+    borderRadius: 10,
+    width: '45%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
 });
 

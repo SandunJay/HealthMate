@@ -1,24 +1,46 @@
-import { View, Text, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native'
 import { constSortCategoryData } from '@/assets/dummy'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
-import { Colors, theme } from '@/constants/Colors'
+import { Colors } from '@/constants/Colors'
 
-const SortCategoryCard = () => {
-    const [activeState, setActiveState] = useState('Popular')
+const SortCategoryCard = ({ isDarkMode } : {isDarkMode:any}) => {
+  const [activeState, setActiveState] = useState('Popular')
+
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: isDarkMode ? Colors.dark.background : Colors.light.background,
+    },
+    button: {
+      backgroundColor: isDarkMode ? Colors.dark.background : Colors.light.background,
+    },
+    activeButton: {
+      backgroundColor: isDarkMode ? Colors.dark.background : Colors.light.background,
+    },
+    buttonText: {
+      color: isDarkMode ? Colors.dark.text : Colors.light.tabIconDefault1,
+    },
+    activeButtonText: {
+      color: isDarkMode ? Colors.dark.icon1 : Colors.light.icon1,
+    },
+  })
+
   return (
-    <View className='flex-row justify-around items-center mx-4 bg-neutral-100 rounded-full p-2 px-4 space-x-2'>
-      {
-        constSortCategoryData.map((sort, index) =>{
-            let isActive = sort == activeState;
-            let activeButtonClass = isActive? 'bg-white shadow':'';
-            return(
-                <TouchableOpacity onPress={()=> {setActiveState(sort)}} key={index} className={`p-3 px-4 rounded-full flex ${activeButtonClass}`}>
-                    <Text className='font-semibold' style={{fontSize: wp(4), color: isActive? Colors.light.icon1: Colors.light.tabIconDefault1}}>{sort}</Text>
-                </TouchableOpacity>
-            )
-        })
-      }
+    <View style={styles.container} className='flex-row justify-around items-center mx-4 rounded-full p-2 px-4 space-x-2'>
+      {constSortCategoryData.map((sort, index) => {
+        let isActive = sort == activeState
+        let activeButtonClass = isActive ? styles.activeButton : {}
+        return (
+          <TouchableOpacity
+            onPress={() => { setActiveState(sort) }}
+            key={index}
+            style={[styles.button, activeButtonClass]}
+            className={`p-3 px-4 rounded-full flex`}
+          >
+            <Text style={[styles.buttonText, isActive && styles.activeButtonText]} className='font-semibold'>{sort}</Text>
+          </TouchableOpacity>
+        )
+      })}
     </View>
   )
 }

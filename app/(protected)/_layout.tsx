@@ -34,7 +34,7 @@ const ProtectedLayout = () => {
   }, [authState, router]);
 
   if (!authState?.authenticated || !authState?.role) {
-    return null;
+    router.replace('/');
   }
 
 	return (

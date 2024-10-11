@@ -1,79 +1,144 @@
+// import { createContext, useContext, useState } from 'react';
+
+// export enum Role {
+// 	ADMIN = 'admin',
+// 	USER = 'user',
+// 	DOCTOR = 'doctor',
+// 	PHARMACIST = 'pharmacist',
+// 	PATIENT = 'patient'
+// }
+
+// interface AuthProps {
+// 	authState: { authenticated: boolean | null; username: string | null; role: Role | null };
+// 	onLogin: (username: string, password: string, userRole: string) => void;
+// 	onLogout: () => void;
+// }
+
+// const AuthContext = createContext<Partial<AuthProps>>({});
+
+// export const useAuth = () => {
+// 	return useContext(AuthContext);
+// };
+
+// export const AuthProvider = ({ children }: any) => {
+// 	const [authState, setAuthState] = useState<{
+// 		authenticated: boolean | null;
+// 		username: string | null;
+// 		role: Role | null;
+// 	}>({
+// 		authenticated: null,
+// 		username: null,
+// 		role: null
+// 	});
+
+// 	const login = (username: string, password: string) => {
+// 		if (username === 'admin' && password === 'admin') {
+// 			setAuthState({
+// 				authenticated: true,
+// 				username: username,
+// 				role: Role.ADMIN
+// 			});
+// 		} else if (username === 'user' && password === 'user') {
+// 			setAuthState({
+// 				authenticated: true,
+// 				username: username,
+// 				role: Role.USER
+// 			});
+//         // } else if (username === 'pharmacist' && password === 'pharmacist') {
+// 		// 	setAuthState({
+// 		// 		authenticated: true,
+// 		// 		username: username,
+// 		// 		role: Role.PHARMACIST
+// 		// 	});
+// 		} else if (userRole === 'pharmacist') {
+// 			setAuthState({
+// 				authenticated: true,
+// 				username: username,
+// 				role: Role.PHARMACIST
+// 			});
+//         } else if (username === 'patient' && password === 'patient') {
+// 			setAuthState({
+// 				authenticated: true,
+// 				username: username,
+// 				role: Role.PATIENT
+// 			});
+// 		} else {
+// 			alert('Invalid username or password!');
+// 		}
+// 	};
+
+// 	const logout = async () => {
+// 		setAuthState({
+// 			authenticated: false,
+// 			username: null,
+// 			role: null
+// 		});
+// 	};
+
+// 	const value = {
+// 		onLogin: login,
+// 		onLogout: logout,
+// 		authState
+// 	};
+
+// 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+// };
+
 import { createContext, useContext, useState } from 'react';
 
 export enum Role {
-	ADMIN = 'admin',
-	USER = 'user',
-	DOCTOR = 'doctor',
-	PHARMACIST = 'pharmacist',
-	PATIENT = 'patient'
+  ADMIN = 'admin',
+  USER = 'user',
+  DOCTOR = 'doctor',
+  PHARMACIST = 'pharmacist',
+  PATIENT = 'patient',
 }
 
 interface AuthProps {
-	authState: { authenticated: boolean | null; username: string | null; role: Role | null };
-	onLogin: (username: string, password: string) => void;
-	onLogout: () => void;
+  authState: { authenticated: boolean | null; username: string | null; role: Role | null };
+  onLogin: (username: string, password: string, userRole: string) => void;
+  onLogout: () => void;
 }
 
 const AuthContext = createContext<Partial<AuthProps>>({});
 
 export const useAuth = () => {
-	return useContext(AuthContext);
+  return useContext(AuthContext);
 };
 
 export const AuthProvider = ({ children }: any) => {
-	const [authState, setAuthState] = useState<{
-		authenticated: boolean | null;
-		username: string | null;
-		role: Role | null;
-	}>({
-		authenticated: null,
-		username: null,
-		role: null
-	});
+  const [authState, setAuthState] = useState<{
+    authenticated: boolean | null;
+    username: string | null;
+    role: Role | null;
+  }>({
+    authenticated: null,
+    username: null,
+    role: null,
+  });
 
-	const login = (username: string, password: string) => {
-		if (username === 'admin' && password === 'admin') {
-			setAuthState({
-				authenticated: true,
-				username: username,
-				role: Role.ADMIN
-			});
-		} else if (username === 'user' && password === 'user') {
-			setAuthState({
-				authenticated: true,
-				username: username,
-				role: Role.USER
-			});
-        } else if (username === 'pharmacist' && password === 'pharmacist') {
-			setAuthState({
-				authenticated: true,
-				username: username,
-				role: Role.PHARMACIST
-			});
-        } else if (username === 'patient' && password === 'patient') {
-			setAuthState({
-				authenticated: true,
-				username: username,
-				role: Role.PATIENT
-			});
-		} else {
-			alert('Invalid username or password!');
-		}
-	};
+  const login = (username: string, password: string, userRole: string) => {
+    // Directly set authState based on the selected role
+    setAuthState({
+      authenticated: true,
+      username: username, // Keep username or set to null as per your requirement
+      role: userRole as Role, // Ensure userRole is of type Role
+    });
+  };
 
-	const logout = async () => {
-		setAuthState({
-			authenticated: false,
-			username: null,
-			role: null
-		});
-	};
+  const logout = () => {
+    setAuthState({
+      authenticated: false,
+      username: null,
+      role: null,
+    });
+  };
 
-	const value = {
-		onLogin: login,
-		onLogout: logout,
-		authState
-	};
+  const value = {
+    onLogin: login,
+    onLogout: logout,
+    authState,
+  };
 
-	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

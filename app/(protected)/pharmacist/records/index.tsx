@@ -1,71 +1,77 @@
-// import { Pressable, Text, View } from 'react-native';
-// import { Link, router } from 'expo-router';
-// import React from 'react';
-
-// // Example array of news items
-// const newsItems = [
-//   { id: 1, title: 'News One' },
-//   { id: 2, title: 'News Two' },
-//   { id: 3, title: 'News Three' },
-//   { id: 4, title: 'News Four' }
-// ];
-
-// const inventoryData = [
-//   { id: '1', name: 'Battery Pack', sku: 'BAT-125-GEN1', price: '$8,500', image: 'https://path-to-battery-pack-image' },
-//   { id: '2', name: 'Electric Motor', sku: 'MOT-248-GEN2', price: '$3,200', image: 'https://path-to-electric-motor-image' },
-//   // Add more inventory items as needed
-// ];
-// const ListPage = () => {
-//   return (
-//     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-//       {newsItems.map((news) => (
-//         <Link key={news.id} href={`/pharmacist/records/${news.id}`}>
-//             <Text>          
-//               {news.title}
-//             </Text>
-//         </Link>
-//       ))}
-
-//     </View>
-//   );
-// };
-
-// export default ListPage;
-
-import { bookings } from '@/assets/dummy';
-import { bookingType } from '@/assets/types';
 import { Colors } from '@/constants/Colors';
-import { Link, router, useRouter } from 'expo-router';
-import React, { useRef, useState } from 'react';
+import { Link, router, useFocusEffect, useRouter } from 'expo-router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { View, Text, FlatList, TextInput, TouchableOpacity, Image, StyleSheet, Pressable, ScrollView, Animated, Modal } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { fetchPrescriptions } from '@/lib/appwrite';
+import { Octicons } from '@expo/vector-icons';
+
+interface PrescriptionType {
+    $id: string;
+    name: { username: string; img: string };  // Adjust name to be an object
+    date: string;
+    diagnosis: string;
+    condition: 'minor' | 'normal' | 'severe';  
+    status: 'issued' | 'rejected' | 'dispensed'; 
+}
+
+
 
 const Records = () => {
+  const { isIos } = useGlobalContext();
+  const { isDarkMode } = useGlobalContext();
   const router = useRouter();
-  const [selectedTab, setSelectedTab] = useState('upcoming');
+  // const [selectedTab, setSelectedTab] = useState('upcoming');
   const [showFilter, setShowFilter] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('');
   const filterAnimation = useRef(new Animated.Value(0)).current;
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const modalAnimation = useRef(new Animated.Value(0)).current; 
+  const [prescriptions, setPrescriptions] = useState<PrescriptionType[]>([]);
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
+  const [selectedTab, setSelectedTab] = useState<string>('all'); 
+  const [filteredPrescriptions, setFilteredPrescriptions] = useState<PrescriptionType[]>([]); // filtered list state
 
-  const openModal = () => {
-    setShowModal(true);
-    Animated.timing(modalAnimation, {
-      toValue: 1,
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  };
+  useFocusEffect(
+    useCallback(() => {
+      const fetchFilteredPrescriptions = async () => {
+        const fetchedPrescriptions = await fetchPrescriptions();
 
-  const closeModal = () => {
-    Animated.timing(modalAnimation, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: true,
-    }).start(() => setShowModal(false));
-  };
+        const mappedPrescriptions: PrescriptionType[] = fetchedPrescriptions.map(prescription => ({
+          $id: prescription.$id,
+          name: prescription.user,  // Map userName to name, with a fallback
+          date: prescription.$createdAt, // Assuming $createdAt represents the 'date'
+          diagnosis: prescription.diagnosis,  // Map diagnosis, or provide a default
+          condition: prescription.condition,  // Provide default or adjust based on real data
+          status: prescription.status // Provide default or adjust based on real data
+        }));
+
+        setPrescriptions(mappedPrescriptions);
+      };
+
+      fetchFilteredPrescriptions();
+    }, [selectedTab, searchKeyword])
+  );
+
+
+
+  // const openModal = () => {
+  //   setShowModal(true);
+  //   Animated.timing(modalAnimation, {
+  //     toValue: 1,
+  //     duration: 300,
+  //     useNativeDriver: true,
+  //   }).start();
+  // };
+
+  // const closeModal = () => {
+  //   Animated.timing(modalAnimation, {
+  //     toValue: 0,
+  //     duration: 300,
+  //     useNativeDriver: true,
+  //   }).start(() => setShowModal(false));
+  // };
 
   const openFilterPopup = () => {
     setShowFilter(true);
@@ -98,148 +104,195 @@ const Records = () => {
     router.push('/pharmacist/records/newModal');
   }
 
+const handleSearch = (text: string) => {
+  setSearchKeyword(text);
 
-  const renderBookingCard = ({item}: {item: bookingType}) => (
-    <View key={item.id} style={styles.bookingCard}>
+  if (text) {
+    const filteredData = prescriptions.filter((prescription) => {
+      const username = prescription.name?.username?.toLowerCase() || '';  // Check for existence of username
+      return username.includes(text.toLowerCase());
+    });
+
+    setFilteredPrescriptions(filteredData);
+  } else {
+    setFilteredPrescriptions(prescriptions); // Show all if no search term
+  }
+};
+
+
+
+const renderBookingCard = ({ item }: { item: PrescriptionType }) => {
+  let buttonText = '';
+  let buttonStyle = {};
+  let otherButtonStyle = {};
+
+  // Determine button text and styles based on item status
+  switch (item.status) {
+    case 'issued':
+      buttonText = 'New Record';
+      buttonStyle = { backgroundColor: isDarkMode ? Colors.dark.tabIconSelected : Colors.light.tabIconDefault1 };
+      otherButtonStyle = { backgroundColor: isDarkMode ? Colors.dark.tabIconDefault1 : Colors.light.tabIconDefault1 };
+      break;
+
+    case 'dispensed':
+      buttonText = 'View Record';
+      buttonStyle = { backgroundColor: isDarkMode ? Colors.dark.tabIconDefault : Colors.light.tabIconSelected }; // Dark green for dispensed
+      otherButtonStyle = { backgroundColor: isDarkMode ? Colors.dark.tabIconDefault1 : Colors.light.tabIconDefault1 };
+      break;
+
+    case 'rejected':
+      buttonText = 'View Record';
+      buttonStyle = { backgroundColor: isDarkMode ? Colors.dark.icon : Colors.light.icon }; // Red for rejected
+      otherButtonStyle = { backgroundColor: isDarkMode ? Colors.dark.tabIconDefault1 : Colors.light.tabIconDefault1 };
+      break;
+
+    default:
+      buttonText = 'Unknown Status';
+      buttonStyle = { backgroundColor: 'gray' };
+      otherButtonStyle = { backgroundColor: isDarkMode ? Colors.dark.tabIconDefault1 : Colors.light.tabIconDefault1 };
+  }
+
+  return (
+    <View key={item.$id} style={[styles.bookingCard, { backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.tint }]}>
       <View style={styles.bookingHeader}>
-        <Text style={styles.orderId}>Record ID: {item.id}</Text>
-        <Text style={styles.orderDate}>{item.date}</Text>
+        <Text style={[styles.orderId, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Record ID: {item.$id}</Text>
+        <Text style={[styles.orderDate, { color: isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary }]}>{item.date}</Text>
       </View>
 
       <View style={styles.userInfo}>
-        <Image source={{ uri: item.image }} style={styles.userImage} />
+        <Image source={{ uri: item.name.img }} style={styles.userImage} />
         <View style={styles.userDetails}>
-          <Text style={styles.userName}>{item.name}</Text>
-          {/* UPDATE RATING TO DIAGNOSIS */}
-          <Text style={styles.userRating}>{item.diagnosis}</Text>
+          <Text style={[styles.userName, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>{item.name.username}</Text>
+          <Text style={[styles.userRating, { color: isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary }]}>{item.diagnosis}</Text>
         </View>
       </View>
 
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.reviewButton}>
+        <TouchableOpacity style={[styles.reviewButton, otherButtonStyle]}>
           <Text style={styles.buttonText}>Remainder</Text>
         </TouchableOpacity>
-          <TouchableOpacity style={styles.bookAgainButton} onPress={() => handleViewBtn(item.id)}>
-            <Text style={styles.buttonText}>View Record</Text>
-          </TouchableOpacity>
-      </View>
-    </View>
-  );
-
-  return (
-    <View style={styles.container}>
-      {/* Header Section */}
-      <View style={styles.header}>
-        <Text style={styles.headerText}>Records</Text>
-        <TouchableOpacity style={styles.skuButton} onPress={() => handleNew()}>
-          <Text style={styles.skuButtonText}>New Record</Text>
+        <TouchableOpacity style={[styles.bookAgainButton, buttonStyle]} onPress={() => handleViewBtn(item.$id)}>
+          <Text style={styles.buttonText}>{buttonText}</Text>
         </TouchableOpacity>
       </View>
-
-      {/* Search Section */}
-      <View style={Colors.glassOly}/>
-      <View style={styles.searchContainer}>
-        <Icon name="search-outline" size={hp('3%')} color="#000" />
-        <TextInput
-          placeholder="Search"
-          style={styles.searchInput}
-        />
-        <TouchableOpacity onPress={openFilterPopup}>
-          <Icon name="filter-outline" size={hp('3%')} color="#000" />
-        </TouchableOpacity>
-      </View>
-
-      <Modal transparent visible={showFilter} animationType='fade'>
-          <TouchableOpacity style={styles.overlay} onPress={closeFilterPopup} />
-  
-          <Animated.View
-            style={[
-              styles.filterPopup,
-              {
-                opacity: filterAnimation,
-                transform: [{
-                  translateY: filterAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [50, 0],
-                  }),
-                }],
-              },
-            ]}
-          >
-            <Pressable
-              style={styles.filterItem}
-              onPress={() => handleFilterSelection('Price Low to High')}
-            >
-              <Text style={styles.filterText}>All</Text>
-            </Pressable>
-            <View style={styles.separator} />
-            <Pressable
-              style={styles.filterItem}
-              onPress={() => handleFilterSelection('Price High to Low')}
-            >
-              <Text style={styles.filterText}>Accepted</Text>
-            </Pressable>
-            <View style={styles.separator} />
-            <Pressable
-              style={styles.filterItem}
-              onPress={() => handleFilterSelection('Latest Arrivals')}
-            >
-              <Text style={styles.filterText}>Rejected</Text>
-            </Pressable>
-          </Animated.View>
-        </Modal>
-
-            {/* Tabs */}
-            <View style={styles.tabs}>
-        <TouchableOpacity
-          style={[
-            styles.tab,
-            selectedTab === 'upcoming' && styles.selectedTab,
-          ]}
-          onPress={() => setSelectedTab('upcoming')}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              selectedTab === 'upcoming' && styles.selectedTabText,
-            ]}
-          >
-            Accepted
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.tab,
-            selectedTab === 'past' && styles.selectedTab,
-          ]}
-          onPress={() => setSelectedTab('past')}
-        >
-          <Text
-            style={[
-              styles.tabText,
-              selectedTab === 'past' && styles.selectedTabText,
-            ]}
-          >
-            Rejected
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Record List */}
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.bookingContainer}>
-      {bookings.map((booking) => renderBookingCard({ item: booking }))}
-      </ScrollView>
-
     </View>
   );
 };
 
 
+  return (
+    <View style={[styles.container, { backgroundColor: isDarkMode ? Colors.dark.background : Colors.light.background, paddingTop: isIos ? hp('3%') : hp('3%') }]}>
+      <View style={styles.header}>
+        <Text style={[styles.headerText, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Records</Text>
+        <TouchableOpacity style={[styles.skuButton, { backgroundColor: isDarkMode ? Colors.light.icon : Colors.dark.icon1 }]} onPress={() => handleNew()}>
+          <Text style={styles.skuButtonText}>New Record</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={[styles.searchContainer, { backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.background }]}>
+        <Octicons name="search" size={hp('3%')} color={isDarkMode ? Colors.dark.icon : Colors.light.icon} />
+        <TextInput
+          placeholder="Search by username"
+          placeholderTextColor={isDarkMode ? Colors.dark.textSecondary : Colors.light.textSecondary}
+          style={[styles.searchInput, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}
+          value={searchKeyword}
+          onChangeText={handleSearch}  // Call handleSearch on text change
+        />
+        <TouchableOpacity onPress={openFilterPopup}>
+          <Octicons name="filter" size={hp('3%')} color={isDarkMode ? Colors.dark.icon : Colors.light.icon} />
+        </TouchableOpacity>
+      </View>
+
+      <Modal transparent visible={showFilter} animationType='fade'>
+        <TouchableOpacity style={styles.overlay} onPress={closeFilterPopup} />
+        <Animated.View
+          style={[
+            styles.filterPopup,
+            {
+              opacity: filterAnimation,
+              transform: [{
+                translateY: filterAnimation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [50, 0],
+                }),
+              }],
+              backgroundColor: isDarkMode ? Colors.dark.cardBackground : Colors.light.background,
+            },
+          ]}
+        >
+          <Pressable
+            style={styles.filterItem}
+            onPress={() => handleFilterSelection('All')}
+          >
+            <Text style={[styles.filterText, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>All</Text>
+          </Pressable>
+          <View style={styles.separator} />
+          <Pressable
+            style={styles.filterItem}
+            onPress={() => handleFilterSelection('issued')}
+          >
+            <Text style={[styles.filterText, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Issued</Text>
+          </Pressable>
+          <View style={styles.separator} />
+          <Pressable
+            style={styles.filterItem}
+            onPress={() => handleFilterSelection('dispensed')}
+          >
+            <Text style={[styles.filterText, { color: isDarkMode ? Colors.dark.text : Colors.light.text }]}>Dispensed</Text>
+          </Pressable>
+        </Animated.View>
+      </Modal>
+
+      <View style={styles.tabs}>
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            selectedTab === 'issued' && styles.selectedTab,
+            { backgroundColor: isDarkMode ? Colors.dark.cardBackground : '#F0F0F0' }
+          ]}
+          onPress={() => setSelectedTab('issued')}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              selectedTab === 'issued' && styles.selectedTabText,
+              { color: isDarkMode ? Colors.dark.text : Colors.light.text }
+            ]}
+          >
+            Issued
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[
+            styles.tab,
+            selectedTab === 'dispensed' && styles.selectedTab,
+            { backgroundColor: isDarkMode ? Colors.dark.cardBackground : '#F0F0F0' }
+          ]}
+          onPress={() => setSelectedTab('dispensed')}
+        >
+          <Text
+            style={[
+              styles.tabText,
+              selectedTab === 'dispensed' && styles.selectedTabText,
+              { color: isDarkMode ? Colors.dark.text : Colors.light.text }
+            ]}
+          >
+            Dispensed
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.bookingContainer}>
+        {prescriptions.map((prescription) => renderBookingCard({ item: prescription }))}
+      </ScrollView>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: wp('5%'),
-    backgroundColor: Colors.main.white,
   },
   header: {
     flexDirection: 'row',
@@ -252,7 +305,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   skuButton: {
-    backgroundColor: Colors.dark.icon1, // Tailwind CSS blue-500 color
     borderRadius: wp('2%'),
     paddingVertical: hp('1%'),
     paddingHorizontal: wp('4%'),
@@ -262,27 +314,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   searchContainer: {
-    ...Colors.glassBg,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: wp('5%'),
     paddingHorizontal: wp('4%'),
     paddingVertical: hp('1%'),
     marginVertical: hp('2%'),
-    borderColor: Colors.main.secondary
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
   searchInput: {
     flex: 1,
     marginLeft: wp('2%'),
     fontSize: hp('2%'),
   },
-  // Filter popup styles
   filterPopup: {
     position: 'absolute',
     top: hp('12%'),
     right: wp('5%'),
     width: wp('40%'),
-    backgroundColor: '#fff',
     borderRadius: 10,
     paddingVertical: hp('1%'),
     shadowColor: '#000',
@@ -297,7 +347,6 @@ const styles = StyleSheet.create({
   },
   filterText: {
     fontSize: hp('2%'),
-    color: '#000',
   },
   separator: {
     height: 1,
@@ -314,11 +363,9 @@ const styles = StyleSheet.create({
   bookingContainer:{
     flex: 1,
     paddingHorizontal: wp('1%'),
-
   },
   bookingCard: {
     paddingHorizontal: wp('5%'),
-    backgroundColor: Colors.dark.tint,
     borderRadius: 25,
     padding: wp('2%'),
     marginBottom: hp('1%'),
@@ -337,7 +384,6 @@ const styles = StyleSheet.create({
   },
   orderDate: {
     fontSize: wp('2.5%'),
-    color: '#777',
   },
   userInfo: {
     flexDirection: 'row',
@@ -351,9 +397,9 @@ const styles = StyleSheet.create({
     marginRight: wp('3%'),
   },
   userDetails: {
-    flexDirection: 'row',     // Align items in a row
-    justifyContent: 'space-between',  // Spread out items
-    alignItems: 'center',    // Align them vertically at the center
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     flex: 1,
   },
   userName: {
@@ -363,20 +409,17 @@ const styles = StyleSheet.create({
   userRating: {
     paddingRight: wp('3%'),
     fontSize: wp('3%'),
-    color: '#555',
   },
   actions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   reviewButton: {
-    backgroundColor: Colors.light.tabIconDefault1,
     paddingVertical: hp('1.25%'),
     paddingHorizontal: wp('3%'),
     borderRadius: 25,
   },
   bookAgainButton: {
-    backgroundColor: Colors.light.tabIconSelected,
     paddingVertical: hp('1.25%'),
     paddingHorizontal: wp('3%'),
     borderRadius: 25,
@@ -396,7 +439,6 @@ const styles = StyleSheet.create({
     paddingVertical: hp('1.25%'),
     paddingHorizontal: wp('4%'),
     borderRadius: 25,
-    backgroundColor: '#F0F0F0',
     marginHorizontal: wp('2%'),
   },
   selectedTab: {
@@ -404,7 +446,6 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: wp('3%'),
-    color: '#000',
   },
   selectedTabText: {
     color: '#fff',
@@ -413,7 +454,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: wp('5%'),

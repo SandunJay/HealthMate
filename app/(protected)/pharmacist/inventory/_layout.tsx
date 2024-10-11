@@ -17,22 +17,21 @@ const InventoryLayout = () => {
         statusBarHidden:true
 			}}
 		>
-		      <Stack.Screen
+		  <Stack.Screen
         name="index"
         options={{
           headerTitle: 'Inventory',
-          // Optionally, you can add another button to the header
-          // headerRight: () => <Button title="Open" onPress={() => router.push('/pharmacist/inventory/add')} />
         }}
       />
       <Stack.Screen
         name="add"
         options={{
           presentation: 'modal', 
-          headerLeft: () => <Button title="Close" onPress={() => router.back()} />, // Close button to dismiss modal
+          headerLeft: () => <Button title="Close" onPress={() => router.back()} />, 
+          headerShown: false
         }}
       />
-            </Stack>
+      </Stack>
 	);
 }
 

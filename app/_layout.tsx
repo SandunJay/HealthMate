@@ -32,9 +32,11 @@ const AppLayout = () => {
 
 const RootLayoutNav = () => {
 	return (
-		<AuthProvider>
-			<AppLayout />
-		</AuthProvider>
+		<GlobalProvider>
+			<AuthProvider>
+				<AppLayout />
+			</AuthProvider>
+		</GlobalProvider>
 	);
 };
 

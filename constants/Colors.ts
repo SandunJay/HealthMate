@@ -16,12 +16,15 @@ export const Colors = {
     nav: '#B5CFB7'
   },
   light: {
-    text: '#11181C',
-    background: '#edffe8',
-    tint: '#ECEDEE',
+    background: '#FFFFFF',
+    text: '#000000',
+    textSecondary: '#6B7280',
+    cardBackground: '#F3F4F6',
+    border: '#E5E7EB',
     icon: '#687076',
     tabIconDefault: '#99BC85',
     tabIconSelected: '#789461',
+    tint: '#F0F4F8',
     text1: '#184001', // new color
     background1: '#EBF2B3', // new color
     tint1: "#EEEDEB", // new color
@@ -30,12 +33,15 @@ export const Colors = {
     tabIconSelected1: '#184001', // new color
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: "#f2f2f2",
+    background: '#1F2937',
+    text: '#F9FAFB',
+    textSecondary: '#D1D5DB',
+    cardBackground: '#374151',
+    border: '#4B5563',
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
-    tabIconSelected: "#35374B",
+    tabIconSelected: '#35374B',
+    tint: '#111827',
     text1: '#EBF2B3', // new color
     background1: '#184001', // new color
     tint1: "#E5E1DA", // new color

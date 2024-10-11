@@ -21,13 +21,13 @@ const ScannerLayout = () => {
 					headerTitle: 'scanner',
 				}}
 			/>
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="qrmodal"
                 options={{
                     presentation: 'modal',
                     headerTitle: 'QR Scanner',
                 }}
-            />
+            /> */}
 		</Stack>
 	);
 }
