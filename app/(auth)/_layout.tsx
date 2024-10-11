@@ -1,29 +1,19 @@
-import { Stack } from 'expo-router';
+import { View, Text } from "react-native";
+import React from "react";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 
 const AuthLayout = () => {
-    return (
-        <Stack
-            screenOptions={{
-                headerShown: false, 
-                statusBarHidden: true,
-            }}
-        >
-            <Stack.Screen
-                name="login"
-                options={{
-                    headerShown: false,
-                    statusBarHidden: true,
-                }}
-            />
-            <Stack.Screen
-                name="register"
-                options={{
-                    headerShown: false, 
-                    statusBarHidden: true,
-                }}
-            />
-        </Stack>
-    );
+  return (
+    <>
+      <Stack>
+        <Stack.Screen name="sign-in" options={{ headerShown: false }} />
+        <Stack.Screen name="sign-up" options={{ headerShown: false }} />
+        <Stack.Screen name="scanner" options={{ headerShown: false }} />
+      </Stack>
+      <StatusBar />
+    </>
+  );
 };
 
 export default AuthLayout;
