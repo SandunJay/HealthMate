@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link, useLocalSearchParams } from "expo-router";
-import { fetchUserData } from "../../../lib/appwrite";
+import { fetchUserData } from "../../lib/appwrite";
 
 const Profile = () => {
   const { post } = useLocalSearchParams();
