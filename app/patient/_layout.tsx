@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import PatientHome from './index';
 import ChatMain from './chatMain';
-import Profile from '../common/profile';
+import Profile from './profile';
 import PatientStack from './PatientStack';
 import PatientHomeStack from './PatientHomeStack';
 

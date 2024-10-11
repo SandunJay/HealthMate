@@ -39,7 +39,7 @@ const scanner = () => {
           if (!hasScanned && data.length > 0) {
             setHasScanned(true);
             router.push({
-              pathname: "../(protected)/common/profile",
+              pathname: "../patient/profile",
               params: {
                 post: data,
               },

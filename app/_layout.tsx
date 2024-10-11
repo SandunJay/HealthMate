@@ -54,6 +54,7 @@ const AppLayout = () => {
       <Stack.Screen name="(protected)" options={{ headerShown: false, statusBarHidden: true }} />
       <Stack.Screen name="not-found" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+	  <Stack.Screen name="patient" options={{headerShown:false}}/>
     </Stack>
 	</GlobalProvider>
   );

@@ -4,7 +4,7 @@ import PharmacistHome from './index';
 import Records from './records';
 import Scanner from './scanner';
 import Inventory from './inventory';
-import Profile from '../common/profile';
+import Profile from '../../patient/profile';
 import TabBar from '@/components/navigation/TabBar';
 
 const Tab = createBottomTabNavigator();
