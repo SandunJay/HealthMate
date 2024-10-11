@@ -14,8 +14,12 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
 <<<<<<< HEAD
+<<<<<<< HEAD
   ]
 =======
 , "app/index.jsx"  ]
 >>>>>>> parent of 279c6f5 (updated profile)
+=======
+  ]
+>>>>>>> parent of cf5d5f8 (Merge pull request #7 from SandunJay/UserProfile)
 }
