@@ -76,6 +76,9 @@ const Appointment = () => {
 
   return (
     <View style={styles.container}>
+      <View >
+        <Text style={styles.header}>Appointments</Text>
+      </View>
       <FlatList
         data={appointments}
         keyExtractor={(item) => item.$id}
@@ -114,8 +117,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    paddingTop:80,
     backgroundColor: '#ffffff', // White background
     justifyContent: 'center',
+  },
+  header:{
+    fontSize:24,
+    textAlign:"center",
+    marginBottom:30,
+    fontWeight:700
   },
   appointmentItem: {
     flexDirection: 'row',

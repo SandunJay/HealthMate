@@ -26,9 +26,6 @@ const QRcodeGenarator = ({ value }) => {
       <View ref={qrRef} style={{ padding: 10 }}>
         <QRCode value={value} size={256} />
       </View>
-
-      {/* Button to trigger QR code generation */}
-      <Button title="Generate QR Code" onPress={generateQRCode} />
     </View>
   );
 };

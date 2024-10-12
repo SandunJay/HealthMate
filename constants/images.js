@@ -8,5 +8,6 @@ import empty from "../assets/images/empty.png";
 import scan from "../assets/images/scan.png";
 import medicalLogo from "../assets/images/MedicalLogo.png";
 import medicalLogoGreen from "../assets/images/MedicalLogoGreen.png"
+import appointment from "../assets/images/trackAppointment.jpg"
 
-export default { profile, thumbnail, cards, path, logo, logoSmall, empty,scan,medicalLogo,medicalLogoGreen };
+export default { profile, thumbnail, cards, path, logo, logoSmall, empty,scan,medicalLogo,medicalLogoGreen,appointment };

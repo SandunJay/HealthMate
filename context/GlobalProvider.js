@@ -9,7 +9,8 @@ export const useGlobalContext = ()=>useContext(GlobalContext);
 const GlobalProvider = ({children})=>{
     const [isLoggedIn,setIsLoggedIn] = useState(false);
     const [user,setUser] = useState(null);
-    const [isLoading,setIsLoading] = useState(true)
+    const [isLoading,setIsLoading] = useState(true);
+    const [username,setUsername] = useState();
 
     // useEffect(()=>{
     //     getCurrentUser()
@@ -55,7 +56,9 @@ const GlobalProvider = ({children})=>{
             user,
             setUser,
             isLoading,
-            createUserAndSave
+            createUserAndSave,
+            setUsername,
+            username
         }}
         >
                 {children}

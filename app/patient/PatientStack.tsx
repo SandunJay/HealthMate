@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 export default function PatientStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Appointment" component={Appointment} options={{ title: 'Appointments' }} />
+      <Stack.Screen name="Appointment" component={Appointment} options={{ title: 'Appointments',headerShown:false }} />
       <Stack.Screen name="AppointmentForm" component={AppointmentForm} options={{ title: 'New Appointment' }} />
       <Stack.Screen name="AppointmentItem" component={AppointmentItem} />
       <Stack.Screen name="AppointmentHistory" component={AppointmentHistory} />
