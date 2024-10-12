@@ -53,7 +53,9 @@ const scanner = () => {
           onPress={() => router.push("/sign-in")}
           className="items-center min-h-[85vh] w-full mt-10"
         >
-          <Text className="text-left text-2xl text-blue-900">Go Back</Text>
+          <Text className="text-left text-2xl text-blue-900 mt-16 bg-primary">
+            Go Back
+          </Text>
         </TouchableOpacity>
         <Text className="text-center">QR code Scanner</Text>
       </CameraView>

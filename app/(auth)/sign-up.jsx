@@ -7,6 +7,7 @@ import CustomeButtonGreen from "../../components/CustomeButtonGreen";
 import { Link, router } from "expo-router";
 import { createUser } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
+import { Dropdown } from "react-native-element-dropdown";
 
 const SignUp = ({ navigation }) => {
   const { createUserAndSave, isLoading } = useGlobalContext();
@@ -19,6 +20,11 @@ const SignUp = ({ navigation }) => {
     bloodtype: "",
     contact: "",
   });
+
+  const gender = [
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" },
+  ];
 
   const [isSubmitting, setIsSubmiting] = useState(false);
 
@@ -88,7 +94,7 @@ const SignUp = ({ navigation }) => {
             value={form.fullName}
             handleChangeText={(e) => setForm({ ...form, fullName: e })}
             otherStyles="mt-7"
-            keyboardType="text"
+            keyboardType="default"
           />
           <FormField
             title="Email"
@@ -102,15 +108,23 @@ const SignUp = ({ navigation }) => {
             value={form.password}
             handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles="mt-7"
-            keyboardType="text"
+            keyboardType="default"
           />
           <FormField
             title="age"
             value={form.age}
             handleChangeText={(e) => setForm({ ...form, age: e })}
             otherStyles="mt-7"
-            keyboardType="number"
+            keyboardType="numeric"
           />
+          {/* <Dropdown
+            placeholder="Male"
+            value={form.gender}
+            valueField={gender}
+            style="border-2 border-gray-100 w-full h-16 px-4 bg-black-100 rounded-2xl focus:border-primary items-center flex-row"
+            selectedTextStyle="flex-1 text-primary font-psemibold text-base"
+            onChange={(e) => setForm({ ...form, gender: e })}
+          /> */}
           <FormField
             title="Gender"
             value={form.gender}
@@ -123,14 +137,14 @@ const SignUp = ({ navigation }) => {
             value={form.bloodtype}
             handleChangeText={(e) => setForm({ ...form, bloodtype: e })}
             otherStyles="mt-7"
-            keyboardType="text"
+            keyboardType="default"
           />
           <FormField
             title="Contact"
             value={form.contact}
             handleChangeText={(e) => setForm({ ...form, contact: e })}
             otherStyles="mt-7"
-            keyboardType="number"
+            keyboardType="numeric"
           />
           <CustomeButtonGreen
             title="Sign Up"

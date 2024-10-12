@@ -50,8 +50,8 @@ const AppLayout = () => {
   return (
 	<GlobalProvider>
     <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false, statusBarHidden: true }} />
-      <Stack.Screen name="(protected)" options={{ headerShown: false, statusBarHidden: true }} />
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="(protected)" options={{ headerShown: false}} />
       <Stack.Screen name="not-found" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
 	  <Stack.Screen name="patient" options={{headerShown:false}}/>

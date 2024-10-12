@@ -60,15 +60,10 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.welcomeText}>Welcome Back!</Text>
+        <Text style={styles.welcomeText}>Welcome !!!!</Text>
         <View style={styles.profileContainer}>
           <Text style={styles.userName}>{userName}</Text>
-          <Image
-            source={{
-              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRp_FZBNQO2Mj7jdd7QAkq71nwczukcyEauww&s",
-            }}
-            style={styles.profileIcon}
-          />
+          <Image source={images.profile} style={styles.profileIcon} />
         </View>
       </View>
 
@@ -237,7 +232,7 @@ const styles = StyleSheet.create({
   cardTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#199A8E",
+    color: "#808486",
     textAlign: "left",
     marginBottom: "auto",
     textShadowColor: "#000",
